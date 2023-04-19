@@ -38,7 +38,6 @@ class WeatherWidget : AppWidgetProvider() {
     }
 }
 
-@SuppressLint("RemoteViewLayout")
 internal fun updateAppWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,

@@ -27,6 +27,7 @@ class WeatherWidgetView @JvmOverloads constructor(
         private const val DEFAULT_CORNER_RADIUS = 20
     }
 
+    var weatherTheme = 0
     private var borderWidth: Float = context.dpToPx(DEFAULT_BORDER_WIDTH)
     private var cornerRadius: Float = context.dpToPx(DEFAULT_CORNER_RADIUS)
     private var textOffSetX: Float = 20f
@@ -37,10 +38,6 @@ class WeatherWidgetView @JvmOverloads constructor(
     private val weatherPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    val cityName = "Moscow"
-    val key = "df5a1aced25d59f557c1352dee1f6c2f"
-    val url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + key
-
     lateinit var canvasBitmap: Canvas
 
     init{
@@ -50,11 +47,13 @@ class WeatherWidgetView @JvmOverloads constructor(
                 R.styleable.WeatherWidgetView_borderWidth,
                 context.dpToPx(DEFAULT_BORDER_WIDTH)
             )
+            weatherTheme = ta.getInteger(
+                R.styleable.WeatherWidgetView_weatherTheme,
+                0
+            )
 
             ta.recycle()
         }
-
-        requestWeather(this.context)
 
         scaleType = ScaleType.CENTER_CROP
         setup()
@@ -80,12 +79,15 @@ class WeatherWidgetView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+        drawView(canvas)
+    }
+
+    fun drawView(canvas: Canvas){
         val half = (borderWidth / 2).toInt()
         viewRect.inset(half, half)
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, weatherPaint)
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, borderPaint)
         canvas.drawText(text, viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
-        canvasBitmap = canvas
     }
 
     private fun setup() {
@@ -112,33 +114,11 @@ class WeatherWidgetView @JvmOverloads constructor(
         textOffSetY = h * 0.05f
     }
 
-
     private fun resolveDefaultSize(spec: Int): Int = when(MeasureSpec.getMode(spec)){
         MeasureSpec.UNSPECIFIED -> context.dpToPx(DEFAULT_WIDTH).toInt()
         MeasureSpec.AT_MOST -> MeasureSpec.getSize(spec)
         MeasureSpec.EXACTLY -> MeasureSpec.getSize(spec)
         else -> MeasureSpec.getSize(spec)
-    }
-
-    private fun requestWeather(context: Context){
-        val queue = Volley.newRequestQueue(context)
-        val request = StringRequest(
-            Request.Method.GET,
-            url,
-            {
-                println(it)
-                text = parseResponse(it)
-            },
-            {
-                text = "Отсутствует соединение"
-            }
-        )
-        queue.add(request)
-    }
-
-    private fun parseResponse(response: String): String{
-        val jsonObject = JSONObject(response)
-        return jsonObject.getJSONArray("weather").getJSONObject(0).getString("main")
     }
 
 }

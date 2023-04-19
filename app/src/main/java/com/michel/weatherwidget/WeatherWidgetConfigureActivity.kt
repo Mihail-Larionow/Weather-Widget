@@ -8,30 +8,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import com.michel.weatherwidget.databinding.WeatherWidgetConfigureBinding
+import com.michel.weatherwidget.ui.WeatherWidgetView
 
 /**
  * The configuration screen for the [WeatherWidget] AppWidget.
  */
 class WeatherWidgetConfigureActivity : Activity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private lateinit var appWidgetText: EditText
-    private var onClickListener = View.OnClickListener {
-        val context = this@WeatherWidgetConfigureActivity
+    private lateinit var weatherWidgetView: WeatherWidgetView
 
-        // When the button is clicked, store the string locally
-        val widgetText = appWidgetText.text.toString()
-        saveTitlePref(context, appWidgetId, widgetText)
-
-        // It is the responsibility of the configuration activity to update the app widget
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        updateAppWidget(context, appWidgetManager, appWidgetId)
-
-        // Make sure we pass back the original appWidgetId
-        val resultValue = Intent()
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        setResult(RESULT_OK, resultValue)
-        finish()
-    }
     private lateinit var binding: WeatherWidgetConfigureBinding
 
     public override fun onCreate(icicle: Bundle?) {
@@ -44,10 +29,8 @@ class WeatherWidgetConfigureActivity : Activity() {
         binding = WeatherWidgetConfigureBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        appWidgetText = binding.appwidgetText as EditText
-        binding.addButton.setOnClickListener(onClickListener)
-
-
+        onClickListener(binding.michelTheme)
+        onClickListener(binding.yuppieTheme)
 
         // Find the widget id from the intent.
         val intent = intent
@@ -64,9 +47,27 @@ class WeatherWidgetConfigureActivity : Activity() {
             return
         }
 
-        appWidgetText.setText(loadTitlePref(this@WeatherWidgetConfigureActivity, appWidgetId))
     }
 
+    private fun onClickListener(view: WeatherWidgetView){
+        view.setOnClickListener {
+            val context = this@WeatherWidgetConfigureActivity
+
+            val weatherTheme = view.weatherTheme
+            // When the button is clicked, store the string locally
+            saveTitlePref(context, appWidgetId, weatherTheme.toString())
+
+            // It is the responsibility of the configuration activity to update the app widget
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+
+            // Make sure we pass back the original appWidgetId
+            val resultValue = Intent()
+            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            setResult(RESULT_OK, resultValue)
+            finish()
+        }
+    }
 }
 
 private const val PREFS_NAME = "com.michel.weatherwidget.WeatherWidget"

@@ -7,6 +7,7 @@
 
     <declare-styleable name="WeatherWidgetView">
         <attr name="borderWidth" format="dimension" />
+        <attr name="weatherTheme" format="integer" />
         <attr name="text" format="string" />
     </declare-styleable>
 </resources>
