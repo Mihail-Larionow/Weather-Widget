@@ -34,8 +34,8 @@
         app:srcCompat="@drawable/example_appwidget_preview" />
 
     <com.michel.weatherwidget.ui.WeatherWidgetView
-        android:layout_width="match_parent"
-        android:layout_height="108dp"
+        android:layout_width="333dp"
+        android:layout_height="141dp"
 
         />
 

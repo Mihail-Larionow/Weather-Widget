@@ -1,5 +1,6 @@
 package com.michel.weatherwidget
 
+import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -37,6 +38,7 @@ class WeatherWidget : AppWidgetProvider() {
     }
 }
 
+@SuppressLint("RemoteViewLayout")
 internal fun updateAppWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,

@@ -4,11 +4,16 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toRectF
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.michel.weatherwidget.R
 import com.michel.weatherwidget.extentions.dpToPx
+import org.json.JSONObject
 
 class WeatherWidgetView @JvmOverloads constructor(
     context: Context,
@@ -32,6 +37,11 @@ class WeatherWidgetView @JvmOverloads constructor(
     private val weatherPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    val cityName = "Moscow"
+    val key = "df5a1aced25d59f557c1352dee1f6c2f"
+    val url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + key
+
+    lateinit var canvasBitmap: Canvas
 
     init{
         if(attrs != null){
@@ -41,9 +51,10 @@ class WeatherWidgetView @JvmOverloads constructor(
                 context.dpToPx(DEFAULT_BORDER_WIDTH)
             )
 
-            text = ta.getString(R.styleable.WeatherWidgetView_text) ?: "No text"
             ta.recycle()
         }
+
+        requestWeather(this.context)
 
         scaleType = ScaleType.CENTER_CROP
         setup()
@@ -74,6 +85,7 @@ class WeatherWidgetView @JvmOverloads constructor(
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, weatherPaint)
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, borderPaint)
         canvas.drawText(text, viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
+        canvasBitmap = canvas
     }
 
     private fun setup() {
@@ -106,6 +118,27 @@ class WeatherWidgetView @JvmOverloads constructor(
         MeasureSpec.AT_MOST -> MeasureSpec.getSize(spec)
         MeasureSpec.EXACTLY -> MeasureSpec.getSize(spec)
         else -> MeasureSpec.getSize(spec)
+    }
+
+    private fun requestWeather(context: Context){
+        val queue = Volley.newRequestQueue(context)
+        val request = StringRequest(
+            Request.Method.GET,
+            url,
+            {
+                println(it)
+                text = parseResponse(it)
+            },
+            {
+                text = "Отсутствует соединение"
+            }
+        )
+        queue.add(request)
+    }
+
+    private fun parseResponse(response: String): String{
+        val jsonObject = JSONObject(response)
+        return jsonObject.getJSONArray("weather").getJSONObject(0).getString("main")
     }
 
 }
