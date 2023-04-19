@@ -47,6 +47,8 @@ class WeatherWidgetConfigureActivity : Activity() {
         appWidgetText = binding.appwidgetText as EditText
         binding.addButton.setOnClickListener(onClickListener)
 
+
+
         // Find the widget id from the intent.
         val intent = intent
         val extras = intent.extras

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -24,5 +25,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/add_widget" />
+
+    <ImageView
+        android:id="@+id/michelTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@drawable/example_appwidget_preview" />
+
+    <com.michel.weatherwidget.ui.WeatherWidgetView
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+
+        />
 
 </LinearLayout>
