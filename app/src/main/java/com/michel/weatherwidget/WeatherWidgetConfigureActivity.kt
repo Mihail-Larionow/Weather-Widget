@@ -5,17 +5,15 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
 import com.michel.weatherwidget.databinding.WeatherWidgetConfigureBinding
-import com.michel.weatherwidget.ui.WeatherWidgetView
+import com.michel.weatherwidget.ui.WeatherView
 
 /**
  * The configuration screen for the [WeatherWidget] AppWidget.
  */
 class WeatherWidgetConfigureActivity : Activity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private lateinit var weatherWidgetView: WeatherWidgetView
+    private lateinit var weatherView: WeatherView
 
     private lateinit var binding: WeatherWidgetConfigureBinding
 
@@ -49,7 +47,7 @@ class WeatherWidgetConfigureActivity : Activity() {
 
     }
 
-    private fun onClickListener(view: WeatherWidgetView){
+    private fun onClickListener(view: WeatherView){
         view.setOnClickListener {
             val context = this@WeatherWidgetConfigureActivity
 

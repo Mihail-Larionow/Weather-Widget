@@ -43,10 +43,12 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-    val widgetText = loadTitlePref(context, appWidgetId)
+    val widgetTheme = loadTitlePref(context, appWidgetId)
+    val weatherWidgetView = WeatherWidgetView()
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    views.setTextViewText(R.id.appwidget_text, widgetText)
+    views.setTextViewText(R.id.appwidget_text, widgetTheme)
+    views.setImageViewResource(R.id.imageView2, R.drawable.example_appwidget_preview)
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)

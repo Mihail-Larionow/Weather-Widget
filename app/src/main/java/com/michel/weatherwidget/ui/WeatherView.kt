@@ -3,19 +3,13 @@ package com.michel.weatherwidget.ui
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toRectF
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.michel.weatherwidget.R
 import com.michel.weatherwidget.extentions.dpToPx
-import org.json.JSONObject
 
-class WeatherWidgetView @JvmOverloads constructor(
+class WeatherView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttribute: Int = 0
