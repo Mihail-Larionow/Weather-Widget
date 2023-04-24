@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         val weatherWidgetView = WeatherWidgetView(applicationContext)
         weatherWidgetView.setSize(500, 500)
         image.setImageBitmap(weatherWidgetView.drawView(0f))
+        weatherWidgetView.requestWeather(applicationContext)
     }
 
 

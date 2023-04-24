@@ -26,7 +26,8 @@ class WeatherWidgetView (context: Context){
 
     private var textOffSetX: Float = 20f
     private var textOffSetY: Float = 20f
-    private var text: String = "No text"
+    private var weather = "sunny"
+    private var temperature: Double = 25.0
     private val viewRect = Rect()
     private val weatherRect = Rect()
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -74,14 +75,14 @@ class WeatherWidgetView (context: Context){
 
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, viewPaint)
         drawWeatherIcon(canvas, viewRect.height())
-        canvas.drawText(text, viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
+        canvas.drawText(temperature.toString(), viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
         return resultBitmap
     }
 
     fun drawView(canvas: Canvas, cornerRadius: Float){
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, viewPaint)
         drawWeatherIcon(canvas, viewRect.height())
-        canvas.drawText(text, viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
+        canvas.drawText(temperature.toString(), viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
     }
 
     fun getWidgetWidth(widgetId: Int, context: Context): Int {
@@ -119,34 +120,38 @@ class WeatherWidgetView (context: Context){
             style = Paint.Style.FILL
         }
 
-        if(w == 0 || h == 0 || weatherMap["sunny"] == null) return
-        val srcBitmap = weatherMap["sunny"]!!.toBitmap(w, h, Bitmap.Config.ARGB_8888)
+        if(w == 0 || h == 0 || weatherMap[weather] == null) return
+        val srcBitmap = weatherMap[weather]!!.toBitmap(w, h, Bitmap.Config.ARGB_8888)
         weatherPaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
     }
 
     private fun prepareThemeShader(w: Int, h: Int){
-        val srcBitmap = themeArray[weatherTheme]["sunny"]!!.toBitmap(w, h, Bitmap.Config.ARGB_8888)
-        viewPaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        viewPaint.shader = LinearGradient(0f, 0f,
+            w.toFloat(), h.toFloat(), Color.parseColor("#00BFFF"),
+            Color.parseColor("#87CEEB"), Shader.TileMode.MIRROR
+        )
     }
 
     private fun prepareText(w: Int, h: Int){
         with(textPaint){
             color = Color.WHITE
             textAlign = Paint.Align.RIGHT
-            textSize = w * 0.1f
+            textSize = h * 0.2f
         }
         textOffSetX = h * 0.1f
         textOffSetY = h * 0.1f
     }
 
-    private fun requestWeather(context: Context){
+    fun requestWeather(context: Context){
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(
             Request.Method.GET,
             url,
             {
                 println(it)
-
+                weather = getWeather(it)
+                temperature = getTemp(it) - 273.15
+                //prepareWeatherShader(viewRect.width(), viewRect.height())
             },
             {
 
@@ -155,9 +160,14 @@ class WeatherWidgetView (context: Context){
         queue.add(request)
     }
 
-    private fun parseResponse(response: String): String{
+    private fun getWeather(response: String): String{
         val jsonObject = JSONObject(response)
         return jsonObject.getJSONArray("weather").getJSONObject(0).getString("main")
+    }
+
+    private fun getTemp(response: String): Double{
+        val jsonObject = JSONObject(response)
+        return jsonObject.getJSONObject("main").getDouble("temp")
     }
 
 

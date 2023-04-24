@@ -59,7 +59,7 @@ internal fun updateAppWidget(
 
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    views.setImageViewBitmap(R.id.imageView2, weatherWidgetView.drawView(40f))
+    views.setImageViewBitmap(R.id.weatherView, weatherWidgetView.drawView(10f))
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)

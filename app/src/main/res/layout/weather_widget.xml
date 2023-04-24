@@ -7,7 +7,7 @@
     android:theme="@style/Theme.WeatherWidget.AppWidgetContainer">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/weatherView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
