@@ -5,8 +5,10 @@ import android.graphics.*
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toRectF
 import com.michel.weatherwidget.R
+import com.michel.weatherwidget.WeatherWidgetView
 import com.michel.weatherwidget.extentions.dpToPx
 
 class WeatherView @JvmOverloads constructor(
@@ -17,40 +19,29 @@ class WeatherView @JvmOverloads constructor(
 
     companion object{
         private const val DEFAULT_WIDTH = 40
-        private const val DEFAULT_BORDER_WIDTH = 10
         private const val DEFAULT_CORNER_RADIUS = 20
     }
 
-    var weatherTheme = 0
-    private var borderWidth: Float = context.dpToPx(DEFAULT_BORDER_WIDTH)
-    private var cornerRadius: Float = context.dpToPx(DEFAULT_CORNER_RADIUS)
-    private var textOffSetX: Float = 20f
-    private var textOffSetY: Float = 20f
-    private var text: String = "No text"
-    private val viewRect = Rect()
-    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val weatherPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-
-    lateinit var canvasBitmap: Canvas
+    private var weatherTheme = 0
+    private var cornerRadius = 0f
+    private val weatherWidgetView = WeatherWidgetView(context)
 
     init{
         if(attrs != null){
-            val ta = context.obtainStyledAttributes(attrs, R.styleable.WeatherWidgetView)
-            borderWidth = ta.getDimension(
-                R.styleable.WeatherWidgetView_borderWidth,
-                context.dpToPx(DEFAULT_BORDER_WIDTH)
-            )
+            val ta = context.obtainStyledAttributes(attrs, R.styleable.WeatherView)
             weatherTheme = ta.getInteger(
-                R.styleable.WeatherWidgetView_weatherTheme,
+                R.styleable.WeatherView_weatherTheme,
                 0
+            )
+            cornerRadius = ta.getDimension(
+                R.styleable.WeatherView_cornerRadius,
+                context.dpToPx(DEFAULT_CORNER_RADIUS)
             )
 
             ta.recycle()
         }
 
         scaleType = ScaleType.CENTER_CROP
-        setup()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -60,52 +51,11 @@ class WeatherView @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        if(w==0) return
-        with(viewRect){
-            left = 0
-            top = 0
-            right = w
-            bottom = h
-        }
-
-        prepareShader(w, h)
-        prepareText(w, h)
+        weatherWidgetView.setSize(w, h)
     }
 
     override fun onDraw(canvas: Canvas) {
-        drawView(canvas)
-    }
-
-    fun drawView(canvas: Canvas){
-        val half = (borderWidth / 2).toInt()
-        viewRect.inset(half, half)
-        canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, weatherPaint)
-        canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, borderPaint)
-        canvas.drawText(text, viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
-    }
-
-    private fun setup() {
-        with(borderPaint){
-            color = Color.BLUE
-            style = Paint.Style.STROKE
-            strokeWidth = borderWidth
-        }
-    }
-
-    private fun prepareShader(w: Int, h: Int){
-        if(w == 0 || h == 0 || drawable == null) return
-        val srcBitmap = drawable.toBitmap(w, h, Bitmap.Config.ARGB_8888)
-        weatherPaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-    }
-
-    private fun prepareText(w: Int, h: Int){
-        with(textPaint){
-            color = Color.WHITE
-            textAlign = Paint.Align.RIGHT
-            textSize = w * 0.05f
-        }
-        textOffSetX = w * 0.05f
-        textOffSetY = h * 0.05f
+        weatherWidgetView.drawView(canvas, cornerRadius)
     }
 
     private fun resolveDefaultSize(spec: Int): Int = when(MeasureSpec.getMode(spec)){

@@ -5,9 +5,9 @@
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="WeatherWidgetView">
-        <attr name="borderWidth" format="dimension" />
+    <declare-styleable name="WeatherView">
         <attr name="weatherTheme" format="integer" />
+        <attr name="cornerRadius" format="dimension" />
         <attr name="text" format="string" />
     </declare-styleable>
 </resources>

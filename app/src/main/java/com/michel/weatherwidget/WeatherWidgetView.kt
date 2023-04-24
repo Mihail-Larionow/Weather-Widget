@@ -1,29 +1,42 @@
 package com.michel.weatherwidget
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toRectF
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.michel.weatherwidget.extentions.dpToPx
+import com.michel.weatherwidget.ui.WeatherView
 import org.json.JSONObject
 
-class WeatherWidgetView {
+class WeatherWidgetView (context: Context){
 
     val cityName = "Moscow"
     val key = BuildConfig.WEATHER_API_KEY
     val url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + key
-    val themeArray = arrayListOf<Map<String, Int>>()
+    val themeArray = arrayListOf<Map<String, Drawable?>>()
 
-    companion object{
-        const val MICHEL_THEME = 0
-        const val YUPPIE_THEME = 1
-    }
+    private var textOffSetX: Float = 20f
+    private var textOffSetY: Float = 20f
+    private var text: String = "No text"
+    private val viewRect = Rect()
+    private val weatherRect = Rect()
+    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val viewPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val weatherPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     var weatherTheme = 0
+
+    init{
+        themeArray.add(mapOf("sunny" to ResourcesCompat.getDrawable(context.resources, R.drawable.sunny, null)))
+    }
 
     fun setCity(city: String){
 
@@ -33,28 +46,90 @@ class WeatherWidgetView {
         weatherTheme = themeId
     }
 
-    fun addTheme(theme: Map<String, Int>){
-        themeArray.add(theme)
-    }
-
-    fun drawView(w: Int, h: Int): Bitmap{
-        val drawable = R.drawable.ic_launcher_foreground
-        val srcBitmap = drawable.toDrawable().toBitmap(w, h, Bitmap.Config.ARGB_8888)
-        val viewRect = Rect()
+    fun setSize(width: Int, height: Int){
         with(viewRect){
             left = 0
             top = 0
-            right = w
-            bottom = h
+            right = width
+            bottom = height
         }
-        val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        val weatherPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        with(weatherRect){
+            left = 0
+            top = 0
+            right = height / 2
+            bottom = height / 2
+        }
+
+        prepareWeatherShader(height/2, height/2, themeArray[weatherTheme]["sunny"])
+        prepareText(width, height)
+    }
+
+    fun drawView(cornerRadius: Float): Bitmap{
+        val resultBitmap: Bitmap = Bitmap.createBitmap(viewRect.width(), viewRect.height(), Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(resultBitmap)
+
+        canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, viewPaint)
+        drawWeatherIcon(canvas, viewRect.height())
+        canvas.drawText(text, viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
+        return resultBitmap
+    }
+
+    fun drawView(canvas: Canvas, cornerRadius: Float){
+        canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, viewPaint)
+        drawWeatherIcon(canvas, viewRect.height())
+        canvas.drawText(text, viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
+    }
+
+    fun getWidgetWidth(widgetId: Int, context: Context): Int {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            appWidgetManager.getAppWidgetOptions(widgetId)
+                .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
+        } else {
+            appWidgetManager.getAppWidgetOptions(widgetId)
+                .getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, 0)
+        }
+    }
+
+    fun getWidgetHeight(widgetId: Int, context: Context): Int {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            appWidgetManager.getAppWidgetOptions(widgetId)
+                .getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0)
+        } else {
+            appWidgetManager.getAppWidgetOptions(widgetId)
+                .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0)
+        }
+    }
+
+    private fun drawWeatherIcon(canvas: Canvas, size: Int){
+        val weatherRectOffSet = (size / 4).toFloat()
+        canvas.translate(weatherRectOffSet, weatherRectOffSet)
+        canvas.drawRect(weatherRect.toRectF(), weatherPaint)
+        canvas.translate(-weatherRectOffSet, -weatherRectOffSet)
+    }
+
+    private fun prepareWeatherShader(w: Int, h: Int, drawable: Drawable?){
+        with(viewPaint){
+            color = Color.BLUE
+            style = Paint.Style.FILL
+        }
+
+        if(w == 0 || h == 0 || drawable == null) return
+        val srcBitmap = drawable.toBitmap(w, h, Bitmap.Config.ARGB_8888)
         weatherPaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
 
-        var resultBitmap: Bitmap = Bitmap.createBitmap(w,h, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(resultBitmap)
-        canvas.drawRoundRect(viewRect.toRectF(), 40f, 40f, weatherPaint)
-        return resultBitmap
+    }
+
+    private fun prepareText(w: Int, h: Int){
+        with(textPaint){
+            color = Color.WHITE
+            textAlign = Paint.Align.RIGHT
+            textSize = w * 0.1f
+        }
+        textOffSetX = h * 0.1f
+        textOffSetY = h * 0.1f
     }
 
     private fun requestWeather(context: Context){

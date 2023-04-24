@@ -13,7 +13,7 @@ import com.michel.weatherwidget.ui.WeatherView
  */
 class WeatherWidgetConfigureActivity : Activity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private lateinit var weatherView: WeatherView
+    private lateinit var weatherWidgetView: WeatherWidgetView
 
     private lateinit var binding: WeatherWidgetConfigureBinding
 
@@ -23,6 +23,9 @@ class WeatherWidgetConfigureActivity : Activity() {
         // Set the result to CANCELED.  This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED)
+
+        weatherWidgetView = WeatherWidgetView(applicationContext)
+        weatherWidgetView.setSize(500, 500)
 
         binding = WeatherWidgetConfigureBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -51,9 +54,8 @@ class WeatherWidgetConfigureActivity : Activity() {
         view.setOnClickListener {
             val context = this@WeatherWidgetConfigureActivity
 
-            val weatherTheme = view.weatherTheme
             // When the button is clicked, store the string locally
-            saveTitlePref(context, appWidgetId, weatherTheme.toString())
+            saveTitlePref(context, appWidgetId, "none")
 
             // It is the responsibility of the configuration activity to update the app widget
             val appWidgetManager = AppWidgetManager.getInstance(context)
