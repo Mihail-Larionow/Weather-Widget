@@ -21,7 +21,8 @@ class WeatherWidgetView (context: Context){
     val cityName = "Moscow"
     val key = BuildConfig.WEATHER_API_KEY
     val url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + key
-    val themeArray = arrayListOf<Map<String, Drawable?>>()
+    private val themeArray = arrayListOf<Map<String, Drawable?>>()
+    private val weatherMap= mutableMapOf<String, Drawable?>()
 
     private var textOffSetX: Float = 20f
     private var textOffSetY: Float = 20f
@@ -35,6 +36,7 @@ class WeatherWidgetView (context: Context){
     var weatherTheme = 0
 
     init{
+        weatherMap.set("sunny", ResourcesCompat.getDrawable(context.resources, R.drawable.sunny, null))
         themeArray.add(mapOf("sunny" to ResourcesCompat.getDrawable(context.resources, R.drawable.sunny, null)))
     }
 
@@ -61,7 +63,8 @@ class WeatherWidgetView (context: Context){
             bottom = height / 2
         }
 
-        prepareWeatherShader(height/2, height/2, themeArray[weatherTheme]["sunny"])
+        prepareWeatherShader(height/2, height/2)
+        prepareThemeShader(width, height)
         prepareText(width, height)
     }
 
@@ -104,22 +107,26 @@ class WeatherWidgetView (context: Context){
     }
 
     private fun drawWeatherIcon(canvas: Canvas, size: Int){
-        val weatherRectOffSet = (size / 4).toFloat()
-        canvas.translate(weatherRectOffSet, weatherRectOffSet)
+        val weatherRectOffSet = (viewRect.width() - (size / 8) - weatherRect.width()).toFloat()
+        canvas.translate(weatherRectOffSet, (size/4).toFloat())
         canvas.drawRect(weatherRect.toRectF(), weatherPaint)
-        canvas.translate(-weatherRectOffSet, -weatherRectOffSet)
+        canvas.translate(-weatherRectOffSet, -(size/4).toFloat())
     }
 
-    private fun prepareWeatherShader(w: Int, h: Int, drawable: Drawable?){
+    private fun prepareWeatherShader(w: Int, h: Int){
         with(viewPaint){
             color = Color.BLUE
             style = Paint.Style.FILL
         }
 
-        if(w == 0 || h == 0 || drawable == null) return
-        val srcBitmap = drawable.toBitmap(w, h, Bitmap.Config.ARGB_8888)
+        if(w == 0 || h == 0 || weatherMap["sunny"] == null) return
+        val srcBitmap = weatherMap["sunny"]!!.toBitmap(w, h, Bitmap.Config.ARGB_8888)
         weatherPaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+    }
 
+    private fun prepareThemeShader(w: Int, h: Int){
+        val srcBitmap = themeArray[weatherTheme]["sunny"]!!.toBitmap(w, h, Bitmap.Config.ARGB_8888)
+        viewPaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
     }
 
     private fun prepareText(w: Int, h: Int){
