@@ -1,8 +1,6 @@
 package com.michel.weatherwidget
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
@@ -11,13 +9,15 @@ import androidx.core.graphics.toRectF
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 
 class WeatherWidgetView (context: Context){
 
     val cityName = "Moscow"
     val key = BuildConfig.WEATHER_API_KEY
-    val url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + key
+    val url = "https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$key"
     private val themeArray = arrayListOf<Map<String, Drawable?>>()
     private val weatherMap= mutableMapOf<String, Drawable?>()
 
@@ -26,7 +26,7 @@ class WeatherWidgetView (context: Context){
     private var weather = "sunny"
     private var temperature = 25
     private val viewRect = Rect()
-    private val weatherRect = Rect()
+    private val weatherIconRect = Rect()
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val viewPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val weatherPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -37,10 +37,17 @@ class WeatherWidgetView (context: Context){
     init{
         weatherMap["sunny"] = ResourcesCompat.getDrawable(context.resources, R.drawable.sunny, null)
         themeArray.add(mapOf("sunny" to ResourcesCompat.getDrawable(context.resources, R.drawable.sunny, null)))
-        requestWeather(context)
+        runBlocking {
+            async {
+                requestWeather(context)
+            }.await()
+            println("async")
+        }
+        println("created")
+
     }
 
-    private fun requestWeather(context: Context){
+    private suspend fun requestWeather(context: Context){
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(
             Request.Method.GET,
@@ -74,7 +81,7 @@ class WeatherWidgetView (context: Context){
             bottom = height
         }
 
-        with(weatherRect){
+        with(weatherIconRect){
             left = 0
             top = 0
             right = height / 2
@@ -97,20 +104,20 @@ class WeatherWidgetView (context: Context){
     private fun drawWidget(canvas: Canvas, cornerRadius: Float): Bitmap{
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, viewPaint)
         drawWeatherIcon(canvas, viewRect.height())
-        canvas.drawText(temperature.toString() + "\u2103", viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
+        canvas.drawText("$temperature\u2103", viewRect.width().toFloat() - textOffSetX, viewRect.height().toFloat() - textOffSetY, textPaint)
         return resultBitmap
     }
 
     private fun drawWeatherIcon(canvas: Canvas, size: Int){
-        val weatherRectOffSet = (viewRect.width() - (size / 8) - weatherRect.width()).toFloat()
+        val weatherRectOffSet = (viewRect.width() - (size / 8) - weatherIconRect.width()).toFloat()
         canvas.translate(weatherRectOffSet, (size/4).toFloat())
-        canvas.drawRect(weatherRect.toRectF(), weatherPaint)
+        canvas.drawRect(weatherIconRect.toRectF(), weatherPaint)
         canvas.translate(-weatherRectOffSet, -(size/4).toFloat())
     }
 
     private fun prepareWeatherShader(currentWeather: String){
-        val width = weatherRect.width()
-        val height = weatherRect.height()
+        val width = weatherIconRect.width()
+        val height = weatherIconRect.height()
 
         if(width == 0 || height == 0 || weatherMap[currentWeather] == null) return
         val srcBitmap = weatherMap[currentWeather]!!.toBitmap(width, height, Bitmap.Config.ARGB_8888)
