@@ -1,13 +1,10 @@
 package com.michel.weatherwidget
 
-import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.widget.RemoteViews
-import androidx.core.graphics.drawable.toDrawable
 
 /**
  * Implementation of App Widget functionality.
@@ -53,14 +50,36 @@ internal fun updateAppWidget(
 
     val weatherWidgetView = WeatherWidgetView(context)
     weatherWidgetView.setSize(
-        weatherWidgetView.getWidgetWidth(appWidgetId, context),
-        weatherWidgetView.getWidgetHeight(appWidgetId, context),
+        getWidgetWidth(appWidgetId, context),
+        getWidgetHeight(appWidgetId, context),
     )
 
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    views.setImageViewBitmap(R.id.weatherView, weatherWidgetView.drawView(10f))
+    views.setImageViewBitmap(R.id.weatherView, weatherWidgetView.draw(cornerRadius = 10f))
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
+}
+
+internal fun getWidgetWidth(widgetId: Int, context: Context): Int {
+    val appWidgetManager = AppWidgetManager.getInstance(context)
+    return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        appWidgetManager.getAppWidgetOptions(widgetId)
+            .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
+    } else {
+        appWidgetManager.getAppWidgetOptions(widgetId)
+            .getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, 0)
+    }
+}
+
+internal fun getWidgetHeight(widgetId: Int, context: Context): Int {
+    val appWidgetManager = AppWidgetManager.getInstance(context)
+    return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        appWidgetManager.getAppWidgetOptions(widgetId)
+            .getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, 0)
+    } else {
+        appWidgetManager.getAppWidgetOptions(widgetId)
+            .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0)
+    }
 }

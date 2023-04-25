@@ -4,9 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.toRectF
 import com.michel.weatherwidget.R
 import com.michel.weatherwidget.WeatherWidgetView
 import com.michel.weatherwidget.extentions.dpToPx
@@ -55,7 +52,7 @@ class WeatherView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        weatherWidgetView.drawView(canvas, cornerRadius)
+        weatherWidgetView.draw(canvas, cornerRadius)
     }
 
     private fun resolveDefaultSize(spec: Int): Int = when(MeasureSpec.getMode(spec)){
