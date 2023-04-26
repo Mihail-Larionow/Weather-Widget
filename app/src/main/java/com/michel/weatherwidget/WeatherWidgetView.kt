@@ -6,16 +6,14 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toRectF
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import org.json.JSONObject
+import com.michel.weatherwidget.retrofit.WeatherAPI
+import kotlinx.coroutines.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class WeatherWidgetView (context: Context){
 
-    val cityName = "Moscow"
+    var cityName = "Moscow"
     val key = BuildConfig.WEATHER_API_KEY
     val url = "https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$key"
     private val themeArray = arrayListOf<Map<String, Drawable?>>()
@@ -31,42 +29,32 @@ class WeatherWidgetView (context: Context){
     private val viewPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val weatherPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private lateinit var resultBitmap: Bitmap
+    private var weatherAPI: WeatherAPI
+
 
     var weatherTheme = 0
 
     init{
         weatherMap["sunny"] = ResourcesCompat.getDrawable(context.resources, R.drawable.sunny, null)
+        weatherMap["Clouds"] = ResourcesCompat.getDrawable(context.resources, R.drawable.clouds, null)
         themeArray.add(mapOf("sunny" to ResourcesCompat.getDrawable(context.resources, R.drawable.sunny, null)))
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        weatherAPI = retrofit.create(WeatherAPI::class.java)
+    }
+
+    fun getWeather(){
         runBlocking {
-            async {
-                requestWeather(context)
-            }.await()
-            println("async")
+            val product = weatherAPI.getProduct("weather?q=$cityName&appid=$key")
+            weather = product.weather[0]["main"].toString()
+            temperature = (product.main["temp"]?.minus(273.15))!!.toInt()
+            println(weather)
         }
-        println("created")
-
     }
 
-    private suspend fun requestWeather(context: Context){
-        val queue = Volley.newRequestQueue(context)
-        val request = StringRequest(
-            Request.Method.GET,
-            url,
-            {
-                println(it)
-                weather = getWeather(it)
-                temperature = (getTemp(it) - 273.15).toInt()
-                //prepareWeatherShader(viewRect.width(), viewRect.height())
-            },
-            {
-
-            }
-        )
-        queue.add(request)
-    }
-
-    fun setCity(city: String){
-
+    fun setCity(cityName: String){
+        this.cityName = cityName
     }
 
     fun setTheme(themeId: Int){
@@ -145,14 +133,5 @@ class WeatherWidgetView (context: Context){
         textOffSetY = h * 0.1f
     }
 
-    private fun getWeather(response: String): String{
-        val jsonObject = JSONObject(response)
-        return jsonObject.getJSONArray("weather").getJSONObject(0).getString("main")
-    }
-
-    private fun getTemp(response: String): Double{
-        val jsonObject = JSONObject(response)
-        return jsonObject.getJSONObject("main").getDouble("temp")
-    }
 
 }
