@@ -9,7 +9,7 @@
     <com.michel.weatherwidget.ui.WeatherView
         android:id="@+id/widget"
         app:cornerRadius="20dp"
-        android:src="@drawable/sunny"
+        android:src="@drawable/sun"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

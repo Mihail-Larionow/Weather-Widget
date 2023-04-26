@@ -48,6 +48,7 @@ internal fun updateAppWidget(
 ) {
 
     val weatherWidgetView = WeatherWidgetView(context)
+    weatherWidgetView.getWeather()
     weatherWidgetView.setSize(
         getWidgetWidth(appWidgetId, context),
         getWidgetHeight(appWidgetId, context),
@@ -55,7 +56,7 @@ internal fun updateAppWidget(
 
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    views.setImageViewBitmap(R.id.weatherView, weatherWidgetView.draw(cornerRadius = 10f))
+    views.setImageViewBitmap(R.id.weatherView, weatherWidgetView.draw(cornerRadius = 15f))
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
