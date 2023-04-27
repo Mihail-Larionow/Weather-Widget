@@ -24,8 +24,6 @@ class WeatherWidgetConfigureActivity : Activity() {
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED)
 
-        weatherWidgetView = WeatherWidgetView(applicationContext)
-        weatherWidgetView.setSize(500, 500)
 
         binding = WeatherWidgetConfigureBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -55,7 +53,7 @@ class WeatherWidgetConfigureActivity : Activity() {
             val context = this@WeatherWidgetConfigureActivity
 
             // When the button is clicked, store the string locally
-            saveTitlePref(context, appWidgetId, "none")
+            saveTitlePref(context, appWidgetId, view.getTheme())
 
             // It is the responsibility of the configuration activity to update the app widget
             val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -74,18 +72,17 @@ private const val PREFS_NAME = "com.michel.weatherwidget.WeatherWidget"
 private const val PREF_PREFIX_KEY = "appwidget_"
 
 // Write the prefix to the SharedPreferences object for this widget
-internal fun saveTitlePref(context: Context, appWidgetId: Int, text: String) {
+internal fun saveTitlePref(context: Context, appWidgetId: Int, themeId: Int) {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
-    prefs.putString(PREF_PREFIX_KEY + appWidgetId, text)
+    prefs.putInt(PREF_PREFIX_KEY + appWidgetId, themeId)
     prefs.apply()
 }
 
 // Read the prefix from the SharedPreferences object for this widget.
 // If there is no preference saved, get the default from a resource
-internal fun loadTitlePref(context: Context, appWidgetId: Int): String {
+internal fun loadTitlePref(context: Context, appWidgetId: Int): Int {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0)
-    val titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null)
-    return titleValue ?: context.getString(R.string.appwidget_text)
+    return prefs.getInt(PREF_PREFIX_KEY + appWidgetId, 0)
 }
 
 internal fun deleteTitlePref(context: Context, appWidgetId: Int) {

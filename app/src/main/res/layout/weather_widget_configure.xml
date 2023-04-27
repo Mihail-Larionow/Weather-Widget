@@ -7,14 +7,15 @@
     android:padding="16dp">
 
     <com.michel.weatherwidget.ui.WeatherView
-        android:id="@+id/michelTheme"
-        app:weatherTheme="1"
+        android:id="@+id/yuppieTheme"
+        app:weatherTheme="0"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.michel.weatherwidget.ui.WeatherView
-        android:id="@+id/yuppieTheme"
+        android:id="@+id/michelTheme"
+        app:weatherTheme="1"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -47,7 +47,9 @@ internal fun updateAppWidget(
     appWidgetId: Int,
 ) {
 
+    val theme = loadTitlePref(context, appWidgetId)
     val weatherWidgetView = WeatherWidgetView(context)
+    weatherWidgetView.setTheme(theme)
     weatherWidgetView.getWeather()
     weatherWidgetView.setSize(
         getWidgetWidth(appWidgetId, context),

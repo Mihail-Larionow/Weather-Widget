@@ -37,10 +37,11 @@ class WeatherView @JvmOverloads constructor(
 
             ta.recycle()
         }
-
+        weatherWidgetView.setTheme(weatherTheme)
         scaleType = ScaleType.CENTER_CROP
     }
 
+    fun getTheme(): Int = weatherTheme
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val initWidth = resolveDefaultSize(widthMeasureSpec)
