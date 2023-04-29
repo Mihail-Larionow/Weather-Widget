@@ -1,9 +1,9 @@
 # Weather-Widget
 
-##Custom view
+## Custom view
 
-##Application
+## Application
 
-##Widget
+## Widget
 
-##Installation
+## Installation
