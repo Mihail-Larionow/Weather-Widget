@@ -15,11 +15,12 @@ class WeatherView @JvmOverloads constructor(
 ): AppCompatImageView(context, attrs, defStyleAttribute){
 
     companion object{
+        private const val DEFAULT_THEME = 0
         private const val DEFAULT_WIDTH = 40
         private const val DEFAULT_CORNER_RADIUS = 20
     }
 
-    private var weatherTheme = 0
+    private var weatherTheme = DEFAULT_THEME
     private var cornerRadius = 0f
     private val weatherWidgetView = WeatherWidgetView(context)
 
@@ -53,7 +54,7 @@ class WeatherView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        weatherWidgetView.draw(canvas, cornerRadius)
+        weatherWidgetView.drawView(canvas, cornerRadius)
     }
 
     private fun resolveDefaultSize(spec: Int): Int = when(MeasureSpec.getMode(spec)){

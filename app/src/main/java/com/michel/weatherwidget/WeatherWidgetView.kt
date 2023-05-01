@@ -2,6 +2,7 @@ package com.michel.weatherwidget
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toRectF
@@ -20,8 +21,8 @@ class WeatherWidgetView (private val context: Context){
     private var themeRectOffSet = 0f
     private var actualTemperatureX = 20f
     private var actualTemperatureY = 20f
-    private var actualWeather = "Clear"
-    private var actualTemperature = 25
+    var actualWeather = "Clear"
+    var actualTemperature = 25
     private var perceivedTemperature = 25
     private val viewRect = Rect()
     private val themeImageRect = Rect()
@@ -85,39 +86,38 @@ class WeatherWidgetView (private val context: Context){
             bottom = height / 2
         }
 
-        prepareWeatherShader(actualWeather)
+        prepareShaders(actualWeather)
         prepareText()
         resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     }
 
-    fun draw(canvas: Canvas? = null, cornerRadius: Float): Bitmap{
+    fun drawView(canvas: Canvas? = null, cornerRadius: Float = 0f, borderWidth: Float = 0f): Bitmap{
         if(canvas == null) {
-            return drawWidget(Canvas(resultBitmap), cornerRadius)
+            return draw(Canvas(resultBitmap), cornerRadius, borderWidth)
         }
-        return drawWidget(canvas, cornerRadius)
+        return draw(canvas, cornerRadius, borderWidth)
     }
 
-    private fun drawWidget(canvas: Canvas, cornerRadius: Float): Bitmap{
+    private fun draw(canvas: Canvas, cornerRadius: Float, borderWidth: Float): Bitmap{
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, backgroundPaint)
-        drawThemeImage(canvas)
-        drawWeatherIcon(canvas)
-        canvas.drawText("$actualTemperature\u2103", actualTemperatureX, actualTemperatureY, textPaint)
+        drawImage(canvas, themeImageRect.toRectF(), themeImagePaint, themeRectOffSet, (viewRect.height() * 0.1).toFloat())
+        drawImage(canvas, weatherIconRect.toRectF(), weatherIconPaint, weatherRectOffSet, (viewRect.height() * 3 / 16).toFloat())
+        drawActualTemp(canvas)
         return resultBitmap
     }
 
-    private fun drawWeatherIcon(canvas: Canvas){
-        canvas.translate(weatherRectOffSet, (viewRect.height() * 3 / 16).toFloat())
-        canvas.drawRect(weatherIconRect.toRectF(), weatherIconPaint)
-        canvas.translate(-weatherRectOffSet, -(viewRect.height() * 3 / 16).toFloat())
+    //Draw image on canvas
+    private fun drawImage(canvas: Canvas, rect: RectF, paint: Paint, offSetX: Float, offSetY: Float){
+        canvas.translate(offSetX, offSetY)
+        canvas.drawRect(rect, paint)
+        canvas.translate(-offSetX, -offSetY)
     }
+    //Draw actual temperature on canvas
+    private fun drawActualTemp(canvas: Canvas) = canvas.drawText(
+        "$actualTemperature\u2103", actualTemperatureX, actualTemperatureY, textPaint
+    )
 
-    private fun drawThemeImage(canvas: Canvas){
-        canvas.translate(themeRectOffSet, (viewRect.height() * 0.1).toFloat())
-        canvas.drawRect(themeImageRect.toRectF(), themeImagePaint)
-        canvas.translate(-themeRectOffSet, -(viewRect.height() * 0.1).toFloat())
-    }
-
-    private fun prepareWeatherShader(currentWeather: String){
+    private fun prepareShaders(currentWeather: String){
         val width = viewRect.width()
         val height = viewRect.height()
 
@@ -126,14 +126,11 @@ class WeatherWidgetView (private val context: Context){
         val weatherIcon = ResourcesCompat.getDrawable(context.resources, DRAWABLES.WEATHER[currentWeather]!!, null)!!
         val themeImage = ResourcesCompat.getDrawable(context.resources, DRAWABLES.THEME[weatherTheme], null)!!
 
-        weatherRectOffSet = (viewRect.width() - (viewRect.height() / 8) - weatherIconRect.width()).toFloat()
-        themeRectOffSet = (viewRect.height() / 8).toFloat()
+        weatherRectOffSet = (width - (height / 8) - weatherIconRect.width()).toFloat()
+        themeRectOffSet = (height / 8).toFloat()
 
-        var srcBitmap = weatherIcon.toBitmap(height/2, height/2, Bitmap.Config.ARGB_8888)
-        weatherIconPaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-
-        srcBitmap = themeImage.toBitmap(themeImageRect.width(), themeImageRect.height(), Bitmap.Config.ARGB_8888)
-        themeImagePaint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        prepareShader(weatherIconPaint, weatherIcon, weatherIconRect.width(), weatherIconRect.height())
+        prepareShader(themeImagePaint, themeImage, themeImageRect.width(), themeImageRect.height())
 
         backgroundPaint.shader = LinearGradient(0f, 0f,
             width.toFloat(), height.toFloat(), DRAWABLES.BACKGROUND[actualWeather]!!.first,
@@ -141,6 +138,10 @@ class WeatherWidgetView (private val context: Context){
         )
     }
 
+    private fun prepareShader(paint: Paint, drawable: Drawable, width: Int, height: Int){
+        val srcBitmap = drawable.toBitmap(width, height, Bitmap.Config.ARGB_8888)
+        paint.shader = BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+    }
 
     private fun prepareText(){
         with(textPaint){
@@ -151,6 +152,5 @@ class WeatherWidgetView (private val context: Context){
         actualTemperatureX = (viewRect.width() - (viewRect.height() / 8) - weatherIconRect.width()/2).toFloat()
         actualTemperatureY = viewRect.height() * 0.85f
     }
-
 
 }
