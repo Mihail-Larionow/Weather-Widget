@@ -99,11 +99,15 @@ class WeatherWidgetView (private val context: Context){
     }
 
     private fun draw(canvas: Canvas, cornerRadius: Float, borderWidth: Float): Bitmap{
-        canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, backgroundPaint)
+        drawBackGround(canvas, cornerRadius, borderWidth)
         drawImage(canvas, themeImageRect.toRectF(), themeImagePaint, themeRectOffSet, (viewRect.height() * 0.1).toFloat())
         drawImage(canvas, weatherIconRect.toRectF(), weatherIconPaint, weatherRectOffSet, (viewRect.height() * 3 / 16).toFloat())
         drawActualTemp(canvas)
         return resultBitmap
+    }
+
+    fun drawBackGround(canvas: Canvas, cornerRadius: Float = 0f, borderWidth: Float = 0f){
+        canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, backgroundPaint)
     }
 
     //Draw image on canvas
