@@ -28,26 +28,9 @@ class MainActivity : AppCompatActivity() {
         val weatherIcon = findViewById<ImageView>(R.id.weatherIcon)
         val temperatureText = findViewById<TextView>(R.id.temperatureText)
         weatherWidgetView.getWeather()
+        weatherWidgetView.setSize(500, 500)
         temperatureText.text = "${weatherWidgetView.actualTemperature}\u2103"
 
-        val displayMetrics = DisplayMetrics()
-
-        // on below line we are getting metrics
-        // for display using window manager.
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-
-        // on below line we are getting height
-        // and width using display metrics.
-        val height = applicationContext.pxToDp(displayMetrics.heightPixels)
-
-        val width = applicationContext.pxToDp(displayMetrics.widthPixels)
-
-        println("${width}, ${height}")
-        val resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(resultBitmap)
-        weatherWidgetView.setSize(width, height)
-        weatherWidgetView.drawBackGround(canvas = canvas)
-        weatherBackground.setImageBitmap(resultBitmap)
     }
 
     private fun setBackground(){

@@ -6,8 +6,11 @@
     </declare-styleable>
 
     <declare-styleable name="WeatherView">
-        <attr name="weatherTheme" format="integer" />
-        <attr name="cornerRadius" format="dimension" />
+        <attr name="weather_theme" format="integer" />
+        <attr name="border_width" format="dimension" />
+        <attr name="corner_radius" format="dimension" />
+        <attr name="icon_size" format="integer" />
+        <attr name="background_image_size" format="integer" />
         <attr name="text" format="string" />
     </declare-styleable>
 </resources>

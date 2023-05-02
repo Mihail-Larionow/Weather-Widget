@@ -17,23 +17,43 @@ class WeatherView @JvmOverloads constructor(
     companion object{
         private const val DEFAULT_THEME = 0
         private const val DEFAULT_WIDTH = 40
+        private const val DEFAULT_BORDER_WIDTH = 0
         private const val DEFAULT_CORNER_RADIUS = 20
     }
 
     private var weatherTheme = DEFAULT_THEME
     private var cornerRadius = 0f
+    private var borderWidth = 0f
+    private var backgroundImageSize = 0
+    private var iconSize = 0
     private val weatherWidgetView = WeatherWidgetView(context)
 
     init{
         if(attrs != null){
             val ta = context.obtainStyledAttributes(attrs, R.styleable.WeatherView)
             weatherTheme = ta.getInteger(
-                R.styleable.WeatherView_weatherTheme,
+                R.styleable.WeatherView_weather_theme,
+                DEFAULT_THEME
+            )
+
+            borderWidth = ta.getDimension(
+                R.styleable.WeatherView_corner_radius,
+                context.dpToPx(DEFAULT_BORDER_WIDTH)
+            )
+
+            cornerRadius = ta.getDimension(
+                R.styleable.WeatherView_corner_radius,
+                context.dpToPx(DEFAULT_CORNER_RADIUS)
+            )
+
+            iconSize = ta.getInteger(
+                R.styleable.WeatherView_icon_size,
                 0
             )
-            cornerRadius = ta.getDimension(
-                R.styleable.WeatherView_cornerRadius,
-                context.dpToPx(DEFAULT_CORNER_RADIUS)
+
+            backgroundImageSize = ta.getInteger(
+                R.styleable.WeatherView_background_image_size,
+                0
             )
 
             ta.recycle()
@@ -46,7 +66,8 @@ class WeatherView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val initWidth = resolveDefaultSize(widthMeasureSpec)
-        setMeasuredDimension(initWidth, (initWidth * 0.4f).toInt())
+        val initHeight = resolveDefaultSize(heightMeasureSpec)
+        setMeasuredDimension(initWidth, initHeight)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

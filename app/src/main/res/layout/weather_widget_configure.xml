@@ -8,17 +8,17 @@
 
     <com.michel.weatherwidget.ui.WeatherView
         android:id="@+id/yuppieTheme"
-        app:weatherTheme="0"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:weather_theme="0" />
 
     <com.michel.weatherwidget.ui.WeatherView
         android:id="@+id/michelTheme"
-        app:weatherTheme="1"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:weather_theme="1" />
 
 
 </LinearLayout>
