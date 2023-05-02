@@ -17,8 +17,8 @@ class WeatherWidgetView (private val context: Context){
     val key = BuildConfig.WEATHER_API_KEY
     val url = "https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$key"
 
-    var actualWeather = "Clear"
-    var actualTemperature = 25
+    var weather = "Clear"
+    var temperature = 25
     var perceivedTemperature = 25
     private val viewRect = Rect()
     private val mainIconRect = Rect()
@@ -31,7 +31,7 @@ class WeatherWidgetView (private val context: Context){
     private lateinit var weatherBitmap: Bitmap
     private lateinit var iconBitmap: Bitmap
 
-    private var weatherIcon = ResourcesCompat.getDrawable(context.resources, DRAWABLES.WEATHER[actualWeather]!!, null)!!
+    private var weatherIcon = ResourcesCompat.getDrawable(context.resources, DRAWABLES.WEATHER[weather]!!, null)!!
     private var themeImage = ResourcesCompat.getDrawable(context.resources, DRAWABLES.THEME[weatherTheme], null)!!
 
     companion object{
@@ -49,11 +49,10 @@ class WeatherWidgetView (private val context: Context){
         runBlocking {
             val response = weatherAPI.getProduct("weather?q=$cityName&appid=$key")
             println(response.toString())
-            actualWeather = response.weather[0]["main"].toString()
-            actualTemperature = (response.main["temp"]?.minus(273.15))!!.toInt()
+            weather = response.weather[0]["main"].toString()
+            temperature = (response.main["temp"]?.minus(273.15))!!.toInt()
             perceivedTemperature = (response.main["feels_like"]?.minus(273.15))!!.toInt()
-            weatherIcon = ResourcesCompat.getDrawable(context.resources, DRAWABLES.WEATHER[actualWeather]!!, null)!!
-            themeImage = ResourcesCompat.getDrawable(context.resources, DRAWABLES.THEME[weatherTheme], null)!!
+            weatherIcon = ResourcesCompat.getDrawable(context.resources, DRAWABLES.WEATHER[weather]!!, null)!!
         }
     }
 
@@ -63,6 +62,7 @@ class WeatherWidgetView (private val context: Context){
 
     fun setTheme(themeId: Int){
         weatherTheme = themeId
+        themeImage = ResourcesCompat.getDrawable(context.resources, DRAWABLES.THEME[weatherTheme], null)!!
     }
 
     fun setSize(width: Int, height: Int){
@@ -91,8 +91,8 @@ class WeatherWidgetView (private val context: Context){
         prepareText()
 
         resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        weatherBitmap = drawShapeImage(weatherIcon, themeImage, weatherIconRect)
-        iconBitmap = drawShapeImage(weatherIcon, themeImage, mainIconRect)
+        weatherBitmap = createShapedImage(weatherIcon, themeImage, weatherIconRect)
+        iconBitmap = createShapedImage(weatherIcon, themeImage, mainIconRect)
     }
 
     fun drawView(canvas: Canvas? = null, cornerRadius: Float = 0f, borderWidth: Float = 0f): Bitmap{
@@ -105,7 +105,7 @@ class WeatherWidgetView (private val context: Context){
     private fun draw(canvas: Canvas, cornerRadius: Float, borderWidth: Float): Bitmap{
         drawBackGround(canvas, cornerRadius, borderWidth)
 
-        //if(actualWeather != "Clear") {
+        if(weather != "Clear") {
 
             drawImage(
                 canvas, weatherIconRect, weatherBitmap,
@@ -119,7 +119,7 @@ class WeatherWidgetView (private val context: Context){
                 viewRect.height() - weatherIconRect.height() * 0.4f
             )
 
-        //}
+        }
 
         drawImage(
             canvas, mainIconRect, iconBitmap,
@@ -131,11 +131,11 @@ class WeatherWidgetView (private val context: Context){
         return resultBitmap
     }
 
-    fun drawBackGround(canvas: Canvas, cornerRadius: Float = 0f, borderWidth: Float = 0f){
+    private fun drawBackGround(canvas: Canvas, cornerRadius: Float = 0f, borderWidth: Float = 0f){
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, backgroundPaint)
     }
 
-    private fun drawShapeImage(shape: Drawable, image: Drawable, rect: Rect): Bitmap{
+    private fun createShapedImage(shape: Drawable, image: Drawable, rect: Rect): Bitmap{
         val maskBm = shape.toBitmap(rect.width(), rect.height(), Bitmap.Config.ALPHA_8)
         val resultBm = maskBm.copy(Bitmap.Config.ARGB_8888, true)
         val srcBm = image.toBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888)
@@ -160,7 +160,7 @@ class WeatherWidgetView (private val context: Context){
     }
     //Draw actual temperature on canvas
     private fun drawActualTemp(canvas: Canvas) = canvas.drawText(
-        "$actualTemperature\u2103", viewRect.width() - viewRect.height() * 0.1f, viewRect.height() * 0.5f, textPaint
+        "$temperature\u2103", viewRect.width() - viewRect.height() * 0.1f, viewRect.height() * 0.5f, textPaint
     )
 
     private fun prepareShaders(){
@@ -168,8 +168,8 @@ class WeatherWidgetView (private val context: Context){
         val height = viewRect.height().toFloat()
 
         backgroundPaint.shader = LinearGradient(0f, 0f,
-            width, height, DRAWABLES.BACKGROUND[actualWeather]!![0],
-            DRAWABLES.BACKGROUND[actualWeather]!![1], Shader.TileMode.MIRROR
+            width, height, DRAWABLES.BACKGROUND[weather]!![0],
+            DRAWABLES.BACKGROUND[weather]!![1], Shader.TileMode.MIRROR
         )
     }
 
