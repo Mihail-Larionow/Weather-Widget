@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class WeatherWidgetView (private val context: Context){
+class WeatherIt (private val context: Context){
 
     var cityName = "Moscow"
     val key = BuildConfig.WEATHER_API_KEY

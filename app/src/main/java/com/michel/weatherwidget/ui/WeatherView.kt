@@ -5,7 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import com.michel.weatherwidget.R
-import com.michel.weatherwidget.WeatherWidgetView
+import com.michel.weatherwidget.WeatherIt
 import com.michel.weatherwidget.extentions.dpToPx
 
 class WeatherView @JvmOverloads constructor(
@@ -25,7 +25,7 @@ class WeatherView @JvmOverloads constructor(
     private var borderWidth = 0f
     private var backgroundImageSize = 0
     private var iconSize = 0
-    private val weatherWidgetView = WeatherWidgetView(context)
+    private val weatherIt = WeatherIt(context)
 
     init{
         if(attrs != null){
@@ -57,7 +57,7 @@ class WeatherView @JvmOverloads constructor(
 
             ta.recycle()
         }
-        weatherWidgetView.setTheme(weatherTheme)
+        weatherIt.setTheme(weatherTheme)
         scaleType = ScaleType.CENTER_CROP
     }
 
@@ -70,11 +70,11 @@ class WeatherView @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        weatherWidgetView.setSize(w, h)
+        weatherIt.setSize(w, h)
     }
 
     override fun onDraw(canvas: Canvas) {
-        weatherWidgetView.drawView(canvas, cornerRadius)
+        weatherIt.drawView(canvas, cornerRadius)
     }
 
     private fun resolveDefaultSize(spec: Int): Int = when(MeasureSpec.getMode(spec)){

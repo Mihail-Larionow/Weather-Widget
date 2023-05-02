@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var background: ConstraintLayout
     private lateinit var weatherIcon: ImageView
-    private lateinit var weatherWidgetView: WeatherWidgetView
+    private lateinit var weatherIt: WeatherIt
     private lateinit var cityName: TextView
     private val drawables = Drawables()
 
@@ -25,22 +25,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()
-        setBackground(weatherWidgetView.weather)
-        setIcon(weatherWidgetView.weather)
+        setBackground(weatherIt.weather)
+        setIcon(weatherIt.weather)
     }
 
     private fun init(){
-        weatherWidgetView = WeatherWidgetView(applicationContext)
+        weatherIt = WeatherIt(applicationContext)
         background = findViewById(R.id.background)
         weatherIcon = findViewById(R.id.weatherIcon)
         cityName = findViewById(R.id.cityName)
 
         cityName.text = "Moscow"
-        weatherWidgetView.setCity(cityName.text.toString())
+        weatherIt.setCity(cityName.text.toString())
 
         val temperatureText = findViewById<TextView>(R.id.temperatureText)
-        weatherWidgetView.getWeather()
-        temperatureText.text = "${weatherWidgetView.temperature}\u2103"
+        weatherIt.getWeather()
+        temperatureText.text = "${weatherIt.temperature}\u2103"
 
     }
 
