@@ -15,13 +15,12 @@ class WeatherView @JvmOverloads constructor(
 ): AppCompatImageView(context, attrs, defStyleAttribute){
 
     companion object{
-        private const val DEFAULT_THEME = 0
         private const val DEFAULT_WIDTH = 40
         private const val DEFAULT_BORDER_WIDTH = 0
         private const val DEFAULT_CORNER_RADIUS = 20
     }
 
-    private var weatherTheme = DEFAULT_THEME
+    private var weatherTheme = 0
     private var cornerRadius = 0f
     private var borderWidth = 0f
     private var backgroundImageSize = 0
@@ -33,7 +32,7 @@ class WeatherView @JvmOverloads constructor(
             val ta = context.obtainStyledAttributes(attrs, R.styleable.WeatherView)
             weatherTheme = ta.getResourceId(
                 R.styleable.WeatherView_weather_theme,
-                DEFAULT_THEME
+                0
             )
 
             borderWidth = ta.getDimension(

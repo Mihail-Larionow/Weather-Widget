@@ -5,7 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
+import android.view.View
 import com.michel.weatherwidget.databinding.WeatherWidgetConfigureBinding
 import com.michel.weatherwidget.ui.WeatherView
 
@@ -14,7 +14,6 @@ import com.michel.weatherwidget.ui.WeatherView
  */
 class WeatherWidgetConfigureActivity : Activity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private lateinit var weatherWidgetView: WeatherWidgetView
 
     private lateinit var binding: WeatherWidgetConfigureBinding
 
@@ -66,7 +65,7 @@ class WeatherWidgetConfigureActivity : Activity() {
         }
     }
 
-    private fun onClick(view: ImageView){
+    private fun onClick(view: View){
         view.setOnClickListener {
             intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"

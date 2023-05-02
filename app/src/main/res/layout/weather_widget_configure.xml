@@ -4,21 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white">
 
     <com.michel.weatherwidget.ui.WeatherView
         android:id="@+id/noTheme"
-        app:weather_theme="@drawable/yuppie"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="20dp" />
 
-    <ImageView
+    <Button
         android:id="@+id/addButton"
-        android:background="@color/purple_200"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:text="CUSTOM"
+        android:backgroundTint="@color/light_blue_600"
         android:layout_marginTop="20dp" />
 
 

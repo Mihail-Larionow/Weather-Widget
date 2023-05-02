@@ -1,9 +1,7 @@
 package com.michel.weatherwidget
 
-import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity

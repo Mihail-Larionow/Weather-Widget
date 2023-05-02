@@ -29,7 +29,6 @@ class WeatherWidgetView (private val context: Context){
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private lateinit var resultBitmap: Bitmap
     private var weatherAPI: WeatherAPI
-    private var theme = 0
     private lateinit var weatherBitmap: Bitmap
     private lateinit var iconBitmap: Bitmap
 
@@ -50,7 +49,6 @@ class WeatherWidgetView (private val context: Context){
     fun getWeather(){
         runBlocking {
             val response = weatherAPI.getProduct("weather?q=$cityName&appid=$key")
-            println(response.toString())
             weather = response.weather[0]["main"].toString()
             temperature = (response.main["temp"]?.minus(273.15))!!.toInt()
             perceivedTemperature = (response.main["feels_like"]?.minus(273.15))!!.toInt()
@@ -63,7 +61,7 @@ class WeatherWidgetView (private val context: Context){
     }
 
     fun setTheme(drawableId: Int){
-        themeImage = if(drawableId == null) null
+        themeImage = if(drawableId == 0) null
         else ResourcesCompat.getDrawable(context.resources, drawableId, null)
     }
 
