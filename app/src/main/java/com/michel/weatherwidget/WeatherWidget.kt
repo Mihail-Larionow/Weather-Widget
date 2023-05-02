@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.res.Configuration
+import android.net.Uri
 import android.widget.RemoteViews
 
 /**
@@ -47,9 +48,9 @@ internal fun updateAppWidget(
     appWidgetId: Int,
 ) {
 
-    val theme = loadTitlePref(context, appWidgetId)
+    val themePath = loadTitlePref(context, appWidgetId)
     val weatherWidgetView = WeatherWidgetView(context)
-    weatherWidgetView.setTheme(theme)
+    if(themePath != null) weatherWidgetView.setTheme(Uri.parse(themePath))
     weatherWidgetView.getWeather()
     weatherWidgetView.setSize(
         getWidgetWidth(appWidgetId, context),

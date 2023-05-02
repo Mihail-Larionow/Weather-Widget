@@ -16,5 +16,5 @@ data class Drawables (
         "Snow" to intArrayOf(Color.parseColor("#DCDCDC"), Color.parseColor("#9ACEEB")),
     ),
 
-    val THEME: Array<Int> = arrayOf(R.drawable.yuppie, R.drawable.polina)
+    val THEME: Array<Int?> = arrayOf(null, R.drawable.yuppie, R.drawable.polina)
 )

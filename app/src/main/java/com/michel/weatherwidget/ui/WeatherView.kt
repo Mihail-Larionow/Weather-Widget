@@ -31,7 +31,7 @@ class WeatherView @JvmOverloads constructor(
     init{
         if(attrs != null){
             val ta = context.obtainStyledAttributes(attrs, R.styleable.WeatherView)
-            weatherTheme = ta.getInteger(
+            weatherTheme = ta.getResourceId(
                 R.styleable.WeatherView_weather_theme,
                 DEFAULT_THEME
             )

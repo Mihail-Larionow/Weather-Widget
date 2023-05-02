@@ -1,7 +1,9 @@
 package com.michel.weatherwidget
 
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +15,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var background: ConstraintLayout
     private lateinit var weatherIcon: ImageView
     private lateinit var weatherWidgetView: WeatherWidgetView
+    private lateinit var cityName: TextView
     private val drawables = Drawables()
+
+    companion object{
+        const val GALLERY_REQ_CODE = 1000
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         weatherWidgetView = WeatherWidgetView(applicationContext)
         background = findViewById(R.id.background)
         weatherIcon = findViewById(R.id.weatherIcon)
+        cityName = findViewById(R.id.cityName)
+
+        cityName.text = "Moscow"
+        weatherWidgetView.setCity(cityName.text.toString())
 
         val temperatureText = findViewById<TextView>(R.id.temperatureText)
         weatherWidgetView.getWeather()

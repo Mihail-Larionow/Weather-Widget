@@ -2,7 +2,10 @@ package com.michel.weatherwidget
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toRectF
@@ -15,7 +18,6 @@ class WeatherWidgetView (private val context: Context){
 
     var cityName = "Moscow"
     val key = BuildConfig.WEATHER_API_KEY
-    val url = "https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$key"
 
     var weather = "Clear"
     var temperature = 25
@@ -27,12 +29,12 @@ class WeatherWidgetView (private val context: Context){
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private lateinit var resultBitmap: Bitmap
     private var weatherAPI: WeatherAPI
-    private var weatherTheme = 0
+    private var theme = 0
     private lateinit var weatherBitmap: Bitmap
     private lateinit var iconBitmap: Bitmap
 
     private var weatherIcon = ResourcesCompat.getDrawable(context.resources, DRAWABLES.WEATHER[weather]!!, null)!!
-    private var themeImage = ResourcesCompat.getDrawable(context.resources, DRAWABLES.THEME[weatherTheme], null)!!
+    private var themeImage: Drawable? = null
 
     companion object{
         val DRAWABLES = Drawables()
@@ -60,9 +62,14 @@ class WeatherWidgetView (private val context: Context){
         this.cityName = cityName
     }
 
-    fun setTheme(themeId: Int){
-        weatherTheme = themeId
-        themeImage = ResourcesCompat.getDrawable(context.resources, DRAWABLES.THEME[weatherTheme], null)!!
+    fun setTheme(drawableId: Int){
+        themeImage = if(drawableId == null) null
+        else ResourcesCompat.getDrawable(context.resources, drawableId, null)
+    }
+
+    fun setTheme(path: Uri? = null){
+        themeImage = if(path == null) null
+        else BitmapDrawable(MediaStore.Images.Media.getBitmap(context.contentResolver, path))
     }
 
     fun setSize(width: Int, height: Int){
@@ -95,15 +102,15 @@ class WeatherWidgetView (private val context: Context){
         iconBitmap = createShapedImage(weatherIcon, themeImage, mainIconRect)
     }
 
-    fun drawView(canvas: Canvas? = null, cornerRadius: Float = 0f, borderWidth: Float = 0f): Bitmap{
+    fun drawView(canvas: Canvas? = null, cornerRadius: Float = 0f): Bitmap{
         if(canvas == null) {
-            return draw(Canvas(resultBitmap), cornerRadius, borderWidth)
+            return draw(Canvas(resultBitmap), cornerRadius)
         }
-        return draw(canvas, cornerRadius, borderWidth)
+        return draw(canvas, cornerRadius)
     }
 
-    private fun draw(canvas: Canvas, cornerRadius: Float, borderWidth: Float): Bitmap{
-        drawBackGround(canvas, cornerRadius, borderWidth)
+    private fun draw(canvas: Canvas, cornerRadius: Float): Bitmap{
+        drawBackGround(canvas, cornerRadius)
 
         if(weather != "Clear") {
 
@@ -127,21 +134,23 @@ class WeatherWidgetView (private val context: Context){
             viewRect.height() * 0.05f
         )
 
+
         drawActualTemp(canvas)
+
         return resultBitmap
     }
 
-    private fun drawBackGround(canvas: Canvas, cornerRadius: Float = 0f, borderWidth: Float = 0f){
+    private fun drawBackGround(canvas: Canvas, cornerRadius: Float = 0f){
         canvas.drawRoundRect(viewRect.toRectF(), cornerRadius, cornerRadius, backgroundPaint)
     }
 
-    private fun createShapedImage(shape: Drawable, image: Drawable, rect: Rect): Bitmap{
+    private fun createShapedImage(shape: Drawable, image: Drawable?, rect: Rect): Bitmap{
         val maskBm = shape.toBitmap(rect.width(), rect.height(), Bitmap.Config.ALPHA_8)
         val resultBm = maskBm.copy(Bitmap.Config.ARGB_8888, true)
-        val srcBm = image.toBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888)
+        var srcBm = shape.toBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888)
+        if(image != null) srcBm = image.toBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888)
         val maskPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        val maskCanvas = Canvas(maskBm)
-        maskCanvas.drawBitmap(maskBm, rect, rect, maskPaint)
+
         maskPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
 
         val resultCanvas = Canvas(resultBm)
