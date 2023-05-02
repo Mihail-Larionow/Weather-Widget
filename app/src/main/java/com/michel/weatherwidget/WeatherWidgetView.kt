@@ -168,8 +168,8 @@ class WeatherWidgetView (private val context: Context){
         val height = viewRect.height().toFloat()
 
         backgroundPaint.shader = LinearGradient(0f, 0f,
-            width, height, DRAWABLES.BACKGROUND[actualWeather]!!.first,
-            DRAWABLES.BACKGROUND[actualWeather]!!.second, Shader.TileMode.MIRROR
+            width, height, DRAWABLES.BACKGROUND[actualWeather]!![0],
+            DRAWABLES.BACKGROUND[actualWeather]!![1], Shader.TileMode.MIRROR
         )
     }
 

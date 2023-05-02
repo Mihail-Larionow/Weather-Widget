@@ -1,30 +1,30 @@
 package com.michel.weatherwidget
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.michel.weatherwidget.extentions.pxToDp
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var background: ConstraintLayout
+    private val drawables = Drawables()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()
+        setBackground()
     }
 
     private fun init(){
         val weatherWidgetView = WeatherWidgetView(applicationContext)
-
-        val background = findViewById<ConstraintLayout>(R.id.background)
+        background = findViewById(R.id.background)
         val weatherBackground = findViewById<ImageView>(R.id.weatherBackground)
-        //background.setBackgroundColor(getColor(R.color.black))
         val weatherIcon = findViewById<ImageView>(R.id.weatherIcon)
         val temperatureText = findViewById<TextView>(R.id.temperatureText)
         weatherWidgetView.getWeather()
@@ -34,9 +34,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setBackground(){
-
+        background.background = GradientDrawable(
+            GradientDrawable.Orientation.BL_TR,
+            drawables.BACKGROUND["Clear"]
+        )
     }
-
 
 
 }

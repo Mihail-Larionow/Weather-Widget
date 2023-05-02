@@ -9,9 +9,11 @@ data class Drawables (
         "Clouds" to R.drawable.clouds
     ),
 
-    val BACKGROUND: Map<String, Pair<Int, Int>> = mapOf(
-        "Clear" to Pair(Color.parseColor("#00BFFF"), Color.parseColor("#87CEEB")),
-        "Clouds" to Pair(Color.parseColor("#DCDCDC"), Color.parseColor("#9ACEEB"))
+    val BACKGROUND: Map<String, IntArray> = mapOf(
+        "Clear" to intArrayOf(Color.parseColor("#00BFFF"), Color.parseColor("#87CEEB")),
+        "Clouds" to intArrayOf(Color.parseColor("#DCDCDC"), Color.parseColor("#9ACEEB")),
+        "Rain" to intArrayOf(Color.parseColor("#DCDCDC"), Color.parseColor("#9ACEEB")),
+        "Snow" to intArrayOf(Color.parseColor("#DCDCDC"), Color.parseColor("#9ACEEB")),
     ),
 
     val THEME: Array<Int> = arrayOf(R.drawable.yuppie, R.drawable.polina)
