@@ -4,8 +4,13 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
+import android.os.Bundle
 import android.widget.RemoteViews
+import com.michel.weatherwidget.ui.WeatherView
+
 
 /**
  * Implementation of App Widget functionality.
@@ -39,6 +44,14 @@ class WeatherWidget : AppWidgetProvider() {
         // Enter relevant functionality for when the last widget is disabled
     }
 
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int, newOptions: Bundle?
+    ) {
+        updateAppWidget(context, appWidgetManager, appWidgetId)
+    }
+
 }
 
 internal fun updateAppWidget(
@@ -48,17 +61,19 @@ internal fun updateAppWidget(
 ) {
 
     val themePath = loadTitlePref(context, appWidgetId)
-    val weatherIt = WeatherIt(context)
-    if(themePath != null) weatherIt.setTheme(Uri.parse(themePath))
-    weatherIt.getWeather()
-    weatherIt.setSize(
+    val weatherView = WeatherView(context)
+    if(themePath != null) weatherView.setTheme(Uri.parse(themePath))
+    weatherView.setSize(
         getWidgetWidth(appWidgetId, context),
         getWidgetHeight(appWidgetId, context),
     )
 
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    views.setImageViewBitmap(R.id.weatherView, weatherIt.drawView(cornerRadius = 15f))
+    val widgetBackground = Bitmap.createBitmap(getWidgetWidth(appWidgetId, context), getWidgetHeight(appWidgetId, context), Bitmap.Config.ARGB_8888)
+
+    weatherView.drawView(Canvas(widgetBackground), 15f)
+    views.setImageViewBitmap(R.id.weatherView, widgetBackground)
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)

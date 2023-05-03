@@ -67,7 +67,7 @@ class WeatherWidgetConfigureActivity : Activity() {
 
     private fun onClick(view: View){
         view.setOnClickListener {
-            intent = Intent(Intent.ACTION_PICK)
+            intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.type = "image/*"
             startActivityForResult(intent, MainActivity.GALLERY_REQ_CODE)
         }
@@ -78,7 +78,7 @@ class WeatherWidgetConfigureActivity : Activity() {
         if(requestCode == MainActivity.GALLERY_REQ_CODE && resultCode == RESULT_OK) {
             val context = this@WeatherWidgetConfigureActivity
             saveTitlePref(context, appWidgetId, data?.data.toString())
-            println(data?.data)
+
             // It is the responsibility of the configuration activity to update the app widget
             val appWidgetManager = AppWidgetManager.getInstance(context)
             updateAppWidget(context, appWidgetManager, appWidgetId)
