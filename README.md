@@ -2,7 +2,9 @@
 _Aesthetic and concise app that shows the weather._
 
 ## Application
+WeatherIt shows the current weather and temperature in the selected city.
 <img src="https://github.com/Mihail-Larionow/Weather-Widget/blob/master/images/weather_app_logo.png" alt="drawing"/>
+To work correctly, it uses the API of the OpenWeather service.
 
 ## Custom view
 <img src="https://github.com/Mihail-Larionow/Weather-Widget/blob/master/images/weather_view_logo.png" alt="drawing"/>
