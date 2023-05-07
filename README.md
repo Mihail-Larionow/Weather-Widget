@@ -7,7 +7,9 @@ WeatherIt shows the current weather and temperature in the selected city.
 To work correctly, it uses the API of the OpenWeather service.
 
 ## Custom view
+A special custom view was developed to make the work easier. This view also shows the current weather. 
 <img src="https://github.com/Mihail-Larionow/Weather-Widget/blob/master/images/weather_view_logo.png" alt="drawing"/>
+It can be customized to your liking. For example, you can set the height, width, corner radius and theme of this view as you want.
 
 ## Widget
 <img src="https://github.com/Mihail-Larionow/Weather-Widget/blob/master/images/weather_widget_logo.png" alt="drawing"/>
