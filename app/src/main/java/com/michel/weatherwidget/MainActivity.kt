@@ -7,14 +7,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
+import com.michel.weatherwidget.adapters.RecyclerAdapter
 
 class MainActivity : AppCompatActivity() {
 
     private val drawables = Drawables()
+    private val cityNames = arrayListOf("Moscow", "Saint-Petersbourg", "Kostroma")
 
     private lateinit var cityName: TextView
     private lateinit var weatherIcon: ImageView
     private lateinit var background: ConstraintLayout
+    private lateinit var recycler: RecyclerView
 
     companion object{
         const val GALLERY_REQ_CODE = 1000
@@ -32,7 +38,9 @@ class MainActivity : AppCompatActivity() {
         background = findViewById(R.id.background)
         weatherIcon = findViewById(R.id.weatherIcon)
         cityName = findViewById(R.id.cityName)
+        recycler = findViewById(R.id.cities)
 
+        recycler.adapter = RecyclerAdapter(cityNames)
         cityName.text = "Moscow"
         weather.setCity(cityName.text.toString())
 
