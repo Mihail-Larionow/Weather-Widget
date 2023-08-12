@@ -1,4 +1,6 @@
 # WeatherIt
+<img src="https://img.shields.io/badge/stage-raw-red.svg" alt="stage"> 
+
 _Aesthetic and concise app that shows the weather._
 
 ## Application
