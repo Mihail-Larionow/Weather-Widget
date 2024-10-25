@@ -52,6 +52,7 @@ android {
 dependencies {
 
     implementation(project(":feature:weather"))
+    implementation(project(":feature:profile"))
     implementation(project(":core:ui"))
 
     implementation(libs.androidx.core.ktx)

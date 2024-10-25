@@ -1,18 +1,17 @@
 package com.michel.weatherit.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
-import com.michel.weather.WeatherScreen
+import com.michel.profile.navigation.profileScreen
 import com.michel.weather.navigation.WeatherRoute
-import com.michel.weatherit.ui.WeatherAppState
+import com.michel.weather.navigation.weatherScreen
+import com.michel.weatherit.ui.WiAppState
 
 @Composable
-fun WeatherAppNavHost(
+fun WiAppNavHost(
     modifier: Modifier = Modifier,
-    appState: WeatherAppState,
+    appState: WiAppState,
     onShowSnackbar: suspend (String, String) -> Boolean,
 ) {
     val navController = appState.navController
@@ -21,7 +20,8 @@ fun WeatherAppNavHost(
         startDestination = WeatherRoute,
         modifier = modifier,
     ) {
-        
+        weatherScreen(onClick = {})
+        profileScreen(onClick = {})
     }
 }
 

@@ -12,14 +12,10 @@ import kotlinx.serialization.Serializable
 data object WeatherRoute
 
 fun NavController.navigateToWeather(navOptions: NavOptions) =
-    navigate(route = WeatherRoute, navOptions)
+    navigate(route = WeatherRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.forWeatherScreen(onClick: () -> Unit) {
-    composable<WeatherRoute>(
-        deepLinks = listOf(
-            navDeepLink { },
-        ),
-    ) {
+fun NavGraphBuilder.weatherScreen(onClick: () -> Unit) {
+    composable<WeatherRoute> {
         WeatherScreen()
     }
 }

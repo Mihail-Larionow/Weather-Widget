@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.michel.weather"
+    namespace = "com.michel.profile"
     compileSdk = 34
 
     defaultConfig {
@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.navigation.compose)

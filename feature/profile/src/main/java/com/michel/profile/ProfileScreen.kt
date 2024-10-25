@@ -1,10 +1,10 @@
-package com.michel.weather
+package com.michel.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,14 +12,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-internal fun WeatherScreen() {
+internal fun ProfileScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Cyan)
+            .background(Color.Red )
     ) {
         Text(
-            text = stringResource(R.string.weather_app_feature_weather_navigation_label),
+            text = stringResource(R.string.weather_app_feature_profile_navigation_label),
             modifier = Modifier.align(Alignment.Center)
         )
     }
@@ -28,5 +28,5 @@ internal fun WeatherScreen() {
 @Preview(showBackground = true)
 @Composable
 fun WeatherScreenPreview() {
-    WeatherScreen()
+    ProfileScreen()
 }

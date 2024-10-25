@@ -14,19 +14,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.michel.profile.navigation.navigateToProfile
+import com.michel.weather.navigation.navigateToWeather
 import com.michel.weatherit.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun rememberWeatherAppState(
+fun rememberWiAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
-): WeatherAppState {
+): WiAppState {
     return remember(
         coroutineScope,
         navController,
     ) {
-        WeatherAppState(
+        WiAppState(
             coroutineScope = coroutineScope,
             navController = navController,
         )
@@ -34,7 +36,7 @@ fun rememberWeatherAppState(
 }
 
 @Stable
-class WeatherAppState(
+class WiAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope,
 ) {
@@ -59,7 +61,8 @@ class WeatherAppState(
             }
 
             when (topLevelDestination) {
-                else -> {}
+                TopLevelDestination.WEATHER -> navController.navigateToWeather(topLevelNavOptions)
+                TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
             }
         }
     }
