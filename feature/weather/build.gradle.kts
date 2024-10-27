@@ -50,6 +50,10 @@ android {
 
 dependencies {
 
+    implementation(project(":core:mvi"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:models"))
+
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.navigation.compose)
@@ -65,6 +69,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

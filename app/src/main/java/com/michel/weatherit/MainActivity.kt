@@ -8,7 +8,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import com.michel.ui.theme.WiTheme
 import com.michel.weatherit.ui.WiApp
 import com.michel.weatherit.ui.rememberWiAppState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
