@@ -10,5 +10,5 @@ abstract class BaseViewModel<I, E, S, M> : ViewModel() {
 
     abstract val effect: Flow<E>
 
-    abstract fun handleIntent(intent: I)
+    abstract fun accept(intent: I)
 }

@@ -20,6 +20,11 @@ class Store<I, E, S, M>(
     private val reducer: Reducer<E, S, M>,
 ) : AbstractFlow<S>(), FlowCollector<I> {
 
+    private val _intentFlow = MutableSharedFlow<I>()
+
+    private val _effectChannel = Channel<E>()
+    val effects: ReceiveChannel<E> = _effectChannel
+
     private val atomicState = AtomicReference(initialState)
     var state: S
         get() = atomicState.get()
@@ -31,11 +36,6 @@ class Store<I, E, S, M>(
         .onEach { state = it }
         .onStart { emit(state) }
 
-    private val _intentFlow = MutableSharedFlow<I>()
-
-    private val _effectChannel = Channel<E>()
-    val effects: ReceiveChannel<E> = _effectChannel
-
     private fun init(): Flow<M> = actor.init()
 
     private fun Flow<I>.observeActor(): Flow<M> = with(actor) { runActor(state) }
@@ -43,7 +43,7 @@ class Store<I, E, S, M>(
     private fun observeIntents(): Flow<M> = _intentFlow.observeActor()
 
     override suspend fun collectSafely(collector: FlowCollector<S>) {
-
+        _state.collect(collector::emit)
     }
 
     override suspend fun emit(value: I) {
