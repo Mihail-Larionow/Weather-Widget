@@ -8,7 +8,7 @@ internal class WeatherMapperImpl @Inject constructor() : WeatherMapper {
 
     override fun mapToState(weatherInitData: WeatherInitData?): WeatherState {
         if(weatherInitData == null) return WeatherState()
-        val weatherInfo = weatherInitData.weatherData.info
+        val weatherInfo = weatherInitData.weatherData.latitude.toString()
         return WeatherState(weatherInfo = weatherInfo)
     }
 }

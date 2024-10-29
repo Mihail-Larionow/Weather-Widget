@@ -1,4 +1,4 @@
-package com.michel.weather.presentation
+package com.michel.weather.presentation.mvi
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -11,10 +11,8 @@ import com.michel.weather.presentation.mvi.entities.WeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.michel.weather.presentation
+package com.michel.weather.presentation.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.michel.weather.presentation.mvi.WeatherViewModel
+import com.michel.weather.presentation.mvi.entities.WeatherState
 
 @Composable
 internal fun WeatherScreen(
@@ -20,31 +22,47 @@ internal fun WeatherScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    WeatherContent(
+        state = state,
+        modifier = Modifier.fillMaxSize()
+    )
+}
+
+@Composable
+private fun WeatherContent(
+    state: WeatherState,
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Cyan)
+        modifier = modifier.background(Color.Cyan)
     ) {
         WeatherInfo(
+            state = state,
             modifier = Modifier.align(Alignment.Center),
-            weatherInfo = state.weatherInfo,
         )
     }
 }
 
 @Composable
 private fun WeatherInfo(
+    state: WeatherState,
     modifier: Modifier = Modifier,
-    weatherInfo: String,
 ) {
     Text(
-        text = weatherInfo,
+        text = state.weatherInfo,
         modifier = modifier,
     )
 }
 
+internal val MockWeatherState = WeatherState(
+    weatherInfo = "Погода"
+)
+
 @Preview(showBackground = true)
 @Composable
-fun WeatherScreenPreview() {
-    WeatherScreen()
+private fun WeatherScreenPreview() {
+    WeatherContent(
+        state = MockWeatherState,
+        modifier = Modifier.fillMaxSize()
+    )
 }
