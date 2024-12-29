@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.michel.ui.theme.LocalBackgroundTheme
-import com.michel.ui.theme.WiTheme
+import com.michel.ui.theme.WeatherTheme
 
 @Composable
 fun WiBackground (
@@ -40,7 +40,7 @@ annotation class ThemePreviews
 @ThemePreviews
 @Composable
 fun BackgroundDefault() {
-    WiTheme(disableDynamicTheming = true) {
+    WeatherTheme {
         WiBackground(Modifier.size(100.dp), content = {})
     }
 }
@@ -48,7 +48,7 @@ fun BackgroundDefault() {
 @ThemePreviews
 @Composable
 fun BackgroundDynamic() {
-    WiTheme(disableDynamicTheming = false) {
+    WeatherTheme{
         WiBackground(Modifier.size(100.dp), content = {})
     }
 }
@@ -56,7 +56,7 @@ fun BackgroundDynamic() {
 @ThemePreviews
 @Composable
 fun BackgroundAndroid() {
-    WiTheme(androidTheme = true) {
+    WeatherTheme {
         WiBackground(Modifier.size(100.dp), content = {})
     }
 }

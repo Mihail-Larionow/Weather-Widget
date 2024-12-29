@@ -1,13 +1,15 @@
 package com.michel.weather.presentation.mvi
 
-import com.michel.mvi.Actor
+import com.michel.mvi.store.Actor
 import com.michel.weather.domain.GetWeatherDataUseCase
 import com.michel.weather.domain.WeatherInitData
+import com.michel.weather.navigation.WeatherNavDirection
 import com.michel.weather.presentation.mvi.entities.WeatherIntent
 import com.michel.weather.presentation.mvi.entities.WeatherMessage
 import com.michel.weather.presentation.mvi.entities.WeatherState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class WeatherActor @Inject constructor(
@@ -29,9 +31,8 @@ class WeatherActor @Inject constructor(
     override fun run(
         intent: WeatherIntent,
         prevState: WeatherState
-    ): Flow<WeatherMessage> = flow {
-        when(intent) {
-            is WeatherIntent.CopyActionClicked -> emit(WeatherMessage.TextWasCopied)
-        }
+    ): Flow<WeatherMessage> = when (intent) {
+        WeatherIntent.ProfileClicked -> flowOf(WeatherMessage.Navigate(WeatherNavDirection.ToProfile))
+        WeatherIntent.SettingsClicked -> flowOf(WeatherMessage.Navigate(WeatherNavDirection.ToSettings))
     }
 }
