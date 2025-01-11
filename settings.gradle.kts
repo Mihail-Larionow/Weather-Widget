@@ -1,27 +1,41 @@
+rootProject.name = "WeatherIt"
+
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
 }
 
-rootProject.name = "WeatherIt"
 include(":app")
 include(":feature")
 include(":feature:weather")
+include(":feature:profile")
+include(":feature:settings")
+include(":feature:navigation")
+include(":feature:app-information")
 include(":core")
-include(":core:ui")
+include(":core:di")
+include(":core:designsystem")
+include(":core:mvi")
+include(":core:utils")
+include(":core:navigation")
+include(":core:navigation:api")
+include(":core:navigation:impl")
+include(":core:test")
+include(":core:test:unit")
+include(":core:test:snapshot")
+include(":core:network")
+include(":core:network:impl")
+include(":core:network:api")

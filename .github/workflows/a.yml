@@ -1,0 +1,78 @@
+name: WeatherIt Pipeline
+
+on:
+  push:
+    branches: [ "main","dev" ]
+  pull_request:
+    branches: [ "main","dev" ]
+  workflow_dispatch:
+
+env:
+  gradleFlags: --parallel --stacktrace --no-configuration-cache --no-daemon
+
+jobs:
+  LINT:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: 17
+          distribution: "temurin"
+
+      - name: Get Permissions
+        run: chmod +x ./gradlew
+
+      - name: Lint
+        run: ./gradlew lintDebug
+
+      - name: Upload Lint Report
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: LintReport.html
+          path: app/build/reports/lint-results-release.html
+
+  UNIT-TESTS:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: 17
+          distribution: "temurin"
+
+      - name: Get Permissions
+        run: chmod +x ./gradlew
+
+      - name: UnitTest
+        run: ./gradlew testDebugUnitTest
+
+      - name: Upload UnitTest Report
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: UnitTestReport
+          path: app/build/reports/tests/testDebugUnitTest
+
+  BUILD:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: 17
+          distribution: "temurin"
+
+      - name: Get Permissions
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew app:assembleRelease
