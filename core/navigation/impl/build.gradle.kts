@@ -16,6 +16,5 @@ dependencies {
 
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.animation.android)
-    implementation(libs.androidx.navigation.common.ktx)
     implementation(libs.androidx.navigation.runtime.ktx)
 }

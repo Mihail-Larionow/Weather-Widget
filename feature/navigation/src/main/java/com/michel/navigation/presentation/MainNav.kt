@@ -19,6 +19,6 @@ fun MainNav() {
 
     Nav(
         viewModel = viewModel<MainNavViewModel> { subcomponent.viewModelProvider.get() },
-        registrar = remember { subcomponent.registrar },
+        destinationRegistrar = remember { subcomponent.registrar },
     )
 }

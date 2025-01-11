@@ -1,6 +1,6 @@
 package com.michel.api
 
-interface FeatureNavApi <D> {
+interface FeatureNavApi<D> {
 
     fun navigate(direction: D)
 }

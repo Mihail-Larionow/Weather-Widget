@@ -1,6 +1,6 @@
 package com.michel.api
 
-interface DestinationsDataSource<ROUTE : Any> {
+interface DestinationsDataSource<R : Any> {
 
-    operator fun invoke(): Set<NavDestination<out ROUTE>>
+    operator fun invoke(): Set<NavDestination<out R>>
 }

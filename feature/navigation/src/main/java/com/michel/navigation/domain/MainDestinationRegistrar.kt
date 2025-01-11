@@ -1,8 +1,8 @@
 package com.michel.navigation.domain
 
-import com.michel.impl.Registrar
+import com.michel.impl.DestinationRegistrar
 import javax.inject.Inject
 
 internal class MainDestinationRegistrar @Inject constructor(
     dataSource: MainDestinationDataSource,
-) : Registrar by Registrar(dataSource)
+) : DestinationRegistrar by DestinationRegistrar(dataSource)

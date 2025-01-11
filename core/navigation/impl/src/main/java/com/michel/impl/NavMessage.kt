@@ -1,6 +1,6 @@
 package com.michel.impl
 
-sealed interface NavMessage<ROUTE : Any> {
+sealed interface NavMessage<R : Any> {
     data object Up : NavMessage<Nothing>
-    data class Navigate<ROUTE : Any>(val route: ROUTE) : NavMessage<ROUTE>
+    data class Navigate<R : Any>(val route: R) : NavMessage<R>
 }

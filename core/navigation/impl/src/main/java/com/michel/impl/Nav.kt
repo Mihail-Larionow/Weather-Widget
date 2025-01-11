@@ -13,9 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import com.michel.api.BackNavigator
 
 @Composable
-fun <ROUTE : Any> Nav(
-    viewModel: NavViewModel<ROUTE>,
-    registrar: Registrar,
+fun <R : Any> Nav(
+    viewModel: NavViewModel<R>,
+    destinationRegistrar: DestinationRegistrar,
 ) {
     val navController = rememberNavController()
     LaunchedEffect(viewModel) {
@@ -29,7 +29,7 @@ fun <ROUTE : Any> Nav(
     NavHost(
         navController = navController,
         startDestination = viewModel.startDestinationRoute,
-        registrar = registrar,
+        destinationRegistrar = destinationRegistrar,
     )
 }
 
@@ -38,7 +38,7 @@ fun <ROUTE : Any> Nav(
 private fun NavHost(
     navController: NavHostController,
     startDestination: Any,
-    registrar: Registrar,
+    destinationRegistrar: DestinationRegistrar,
 ) {
     SharedTransitionLayout {
         CompositionLocalProvider(
@@ -46,7 +46,7 @@ private fun NavHost(
             LocalBackNavigator provides BackNavigatorImpl(navController),
         ) {
             NavHost(navController = navController, startDestination = startDestination) {
-                with(registrar) {
+                with(destinationRegistrar) {
                     registerDestinations()
                 }
             }
@@ -55,13 +55,11 @@ private fun NavHost(
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-val LocalSharedTransitionScope =
-    staticCompositionLocalOf<SharedTransitionScope> {
-        error("CompositionLocal LocalSharedTransition not present")
-    }
+val LocalSharedTransitionScope = staticCompositionLocalOf<SharedTransitionScope> {
+    error("CompositionLocal SharedTransitionScope not present")
+}
 
-val LocalBackNavigator =
-    staticCompositionLocalOf<BackNavigator> {
-        error("CompositionLocal NavHostController not present")
-    }
+val LocalBackNavigator = staticCompositionLocalOf<BackNavigator> {
+    error("CompositionLocal BackNavigator not present")
+}
 

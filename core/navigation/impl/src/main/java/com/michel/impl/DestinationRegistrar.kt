@@ -5,17 +5,17 @@ import com.michel.api.NavDestinationType
 import com.michel.api.DestinationsDataSource
 import com.michel.api.NavDestination
 
-fun interface Registrar {
+fun interface DestinationRegistrar {
     fun NavGraphBuilder.registerDestinations()
 }
 
-fun Registrar(dataSource: DestinationsDataSource<*>): Registrar =
-    RegistrarImpl(dataSource, DestinationBuilderImpl())
+fun DestinationRegistrar(dataSource: DestinationsDataSource<*>): DestinationRegistrar =
+    DestinationRegistrarImpl(dataSource, DestinationBuilderImpl())
 
-private class RegistrarImpl(
+private class DestinationRegistrarImpl(
     private val dataSource: DestinationsDataSource<*>,
     private val destinationBuilder: DestinationBuilder,
-) : Registrar {
+) : DestinationRegistrar {
 
     override fun NavGraphBuilder.registerDestinations() {
         dataSource().forEach { destination ->
@@ -23,8 +23,8 @@ private class RegistrarImpl(
         }
     }
 
-    private fun <ROUTE : Any> NavGraphBuilder.register(
-        destination: NavDestination<ROUTE>,
+    private fun <R : Any> NavGraphBuilder.register(
+        destination: NavDestination<R>,
     ) {
         destination(
             when (destination.navDestinationType) {

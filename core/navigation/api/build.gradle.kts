@@ -7,5 +7,7 @@ android {
 }
 
 dependencies {
+    api(libs.androidx.navigation.common.ktx)
+
     implementation(libs.androidx.runtime.android)
 }
