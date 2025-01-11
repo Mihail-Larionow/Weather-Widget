@@ -11,6 +11,4 @@ internal object AndroidConstants {
     const val VERSION_CODE = 1
 
     const val VERSION_NAME = "1.0"
-
-    const val BUILD_TOOLS_VERSION = "34.0.0"
 }

@@ -1,6 +1,5 @@
 package com.michel.weather.data.repositories
 
-import android.util.Log
 import com.michel.weather.data.datasources.WeatherLocalDataSource
 import com.michel.weather.data.datasources.WeatherNetworkDataSource
 import com.michel.weather.data.extensions.toWeatherDomainModel

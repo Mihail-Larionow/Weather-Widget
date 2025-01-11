@@ -6,8 +6,6 @@ import androidx.compose.ui.Modifier
 import com.michel.designsystem.composables.preview.ThemePreviews
 import com.michel.designsystem.theme.WeatherTheme
 
-private const val MODEL_PATH: String = "model/planet.glb"
-
 @Composable
 internal fun PlanetModel(
     modifier: Modifier = Modifier,

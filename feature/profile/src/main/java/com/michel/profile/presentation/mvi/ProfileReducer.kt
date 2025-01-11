@@ -9,10 +9,14 @@ import javax.inject.Inject
 class ProfileReducer @Inject constructor() : Reducer<ProfileEffect, ProfileState, ProfileMessage> {
     override fun reduce(message: ProfileMessage, prevState: ProfileState): ProfileState =
         when (message) {
-            is ProfileMessage.Navigate -> prevState
+            is ProfileMessage.Navigate,
+            is ProfileMessage.Empty,
+                -> prevState
         }
 
     override fun reduceEffect(message: ProfileMessage): ProfileEffect? = when (message) {
         is ProfileMessage.Navigate -> ProfileEffect.Navigate(message.direction)
+        is ProfileMessage.Empty,
+            -> Reducer.nothing
     }
 }

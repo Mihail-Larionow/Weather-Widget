@@ -1,6 +1,5 @@
 package com.michel.weather.domain.usecases
 
-import android.util.Log
 import com.michel.weather.domain.repositories.WeatherDataRepository
 import javax.inject.Inject
 

@@ -9,10 +9,14 @@ import javax.inject.Inject
 class AppInfoReducer @Inject constructor() : Reducer<AppInfoEffect, AppInfoState, AppInfoMessage> {
     override fun reduce(message: AppInfoMessage, prevState: AppInfoState): AppInfoState =
         when (message) {
-            is AppInfoMessage.Navigate -> prevState
+            is AppInfoMessage.Navigate,
+            is AppInfoMessage.Empty,
+                -> prevState
         }
 
     override fun reduceEffect(message: AppInfoMessage): AppInfoEffect? = when (message) {
         is AppInfoMessage.Navigate -> AppInfoEffect.Navigate(message.direction)
+        is AppInfoMessage.Empty,
+            -> Reducer.nothing
     }
 }
