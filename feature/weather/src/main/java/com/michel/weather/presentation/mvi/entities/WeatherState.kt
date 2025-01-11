@@ -2,7 +2,12 @@ package com.michel.weather.presentation.mvi.entities
 
 import androidx.compose.runtime.Immutable
 
-@Immutable
-data class WeatherState(
-    val weatherInfo: String = "none",
-)
+sealed interface WeatherState {
+    data object Loading : WeatherState
+
+    @Immutable
+    data class Loaded(
+        val weatherInfo: String = "",
+    ) : WeatherState
+}
+

@@ -1,14 +1,13 @@
 package com.michel.weather.presentation.mvi.entities.mapper
 
-import com.michel.weather.domain.WeatherInitData
+import com.michel.weather.domain.models.WeatherDomainModel
 import com.michel.weather.presentation.mvi.entities.WeatherState
 import javax.inject.Inject
 
 internal class WeatherMapperImpl @Inject constructor() : WeatherMapper {
 
-    override fun mapToState(weatherInitData: WeatherInitData?): WeatherState {
-        if(weatherInitData == null) return WeatherState()
-        val weatherInfo = weatherInitData.weatherData.latitude.toString()
-        return WeatherState(weatherInfo = weatherInfo)
+    override fun mapToState(domainWeatherData: WeatherDomainModel): WeatherState.Loaded {
+        val weatherInfo = domainWeatherData.temperature
+        return WeatherState.Loaded(weatherInfo = weatherInfo)
     }
 }

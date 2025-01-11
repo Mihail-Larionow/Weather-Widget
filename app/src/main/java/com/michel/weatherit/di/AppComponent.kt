@@ -1,7 +1,6 @@
 package com.michel.weatherit.di
 
 import android.content.Context
-import com.michel.ui.activity.ActivityRegistry
 import com.michel.weatherit.WeatherApplication
 import com.michel.weatherit.main.di.ActivityModule
 import dagger.BindsInstance
@@ -24,7 +23,6 @@ interface AppComponent : AndroidInjector<WeatherApplication> {
     interface Factory {
         fun create(
             @BindsInstance applicationContext: Context,
-            @BindsInstance activityRegistry: ActivityRegistry,
         ): AppComponent
     }
 }

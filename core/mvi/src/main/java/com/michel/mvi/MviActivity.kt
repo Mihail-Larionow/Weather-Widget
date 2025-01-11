@@ -1,14 +1,18 @@
 package com.michel.mvi
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.michel.mvi.extensions.collectWhenStarted
 import com.michel.mvi.store.StoreViewModel
 import com.michel.mvi.store.StoreViewModelFactory
+import com.michel.designsystem.theme.WeatherTheme
 import com.michel.utils.ViewModelFactoryProvider
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.coroutines.launch
 
 
 abstract class MviActivity<I, E, S, M> : DaggerAppCompatActivity() {
@@ -21,17 +25,19 @@ abstract class MviActivity<I, E, S, M> : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         collectWhenStarted(viewModel, effectConsumer = ::handleEffect)
-
-        lifecycleScope.launch {
-            viewModel.state.collect {
-                render(it)
+        setContent {
+            val state by viewModel.state.collectAsState()
+            CompositionLocalProvider {
+                WeatherTheme {
+                    Render(state)
+                }
             }
         }
     }
 
     abstract fun handleEffect(effect: E)
 
-    protected abstract fun render(state: S)
+    @Composable
+    protected abstract fun Render(state: S)
 }

@@ -1,30 +1,22 @@
 package com.michel.navigation.presentation.navapis
 
-import com.michel.navigation.presentation.navcontroller.WeatherNavController
-import com.michel.navigation.presentation.navcontroller.navigate
-import com.michel.navigation.presentation.navgraph.destinations.FragmentDestination
-import com.michel.navigation.presentation.navgraph.destinations.NavGraphDestination
+import com.michel.api.FeatureNavApi
+import com.michel.navigation.domain.MainNavController
+import com.michel.profile.navigation.ProfileRoute
+import com.michel.settings.navigation.SettingsRoute
 import com.michel.weather.navigation.WeatherNavDirection
 import javax.inject.Inject
 
 internal class WeatherNavImpl @Inject constructor(
-    private val weatherNavController: WeatherNavController,
-) : com.michel.navigation.base.FeatureNavApi<WeatherNavDirection> {
+    private val mainNavController: MainNavController,
+) : FeatureNavApi<WeatherNavDirection> {
     override fun navigate(direction: WeatherNavDirection) {
-        weatherNavController.run {
+        mainNavController.run {
             when (direction) {
                 WeatherNavDirection.Up -> navigateUp()
-                WeatherNavDirection.ToProfile -> navigateToProfile()
-                WeatherNavDirection.ToSettings -> navigateToSettings()
+                WeatherNavDirection.ToProfile -> navigate(ProfileRoute)
+                WeatherNavDirection.ToSettings -> navigate(SettingsRoute)
             }
         }
-    }
-
-    private fun WeatherNavController.navigateToProfile() {
-        navigate(destination = NavGraphDestination.Profile)
-    }
-
-    private fun WeatherNavController.navigateToSettings() {
-        navigate(destination = FragmentDestination.Settings)
     }
 }

@@ -1,100 +1,79 @@
 package com.michel.weather.presentation.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.michel.weather.presentation.MockWeatherListeners
-import com.michel.weather.presentation.WeatherListeners
+import com.michel.designsystem.theme.WeatherTheme
+import com.michel.weather.presentation.mvi.entities.WeatherIntent
 import com.michel.weather.presentation.mvi.entities.WeatherState
 
 @Composable
 internal fun WeatherScreenContent(
     state: WeatherState,
-    listeners: WeatherListeners,
+    onIntent: (WeatherIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        modifier = modifier.testTag(""),
-    ) { paddingValues ->
-        WeatherContent(
-            state = state,
-            listeners = listeners,
-            paddingValues = paddingValues,
-            modifier = modifier.fillMaxSize()
-        )
-    }
-}
-
-@Composable
-private fun WeatherContent(
-    state: WeatherState,
-    listeners: WeatherListeners,
-    paddingValues: PaddingValues,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier.background(Color.Cyan)
-    ) {
-        WeatherInfo(
-            state = state,
-            modifier = Modifier.align(Alignment.Center),
-        )
-
-        ProfileButton(
-            onClick = listeners.onProfileClick,
-            modifier = Modifier.align(Alignment.TopStart)
-        )
-    }
-}
-
-@Composable
-private fun WeatherInfo(
-    state: WeatherState,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = state.weatherInfo,
         modifier = modifier,
-    )
+        topBar = {
+            WeatherToolbar(
+                onProfileClick = { onIntent(WeatherIntent.ProfileClicked) },
+                onSettingsClick = { onIntent(WeatherIntent.SettingsClicked) },
+            )
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = modifier
+                .padding(paddingValues)
+                .background(WeatherTheme.colors.backgroundSecondary)
+        ) {
+            when (state) {
+                is WeatherState.Loading -> WeatherContentSkeleton(
+                    modifier = Modifier.align(Alignment.Center),
+                )
+
+                is WeatherState.Loaded -> WeatherContent(
+                    state = state,
+                    onIntent = onIntent,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
+    }
 }
 
-internal val MockWeatherState = WeatherState(
+internal val MockLoadingWeatherState = WeatherState.Loading
+
+internal val MockLoadedWeatherState = WeatherState.Loaded(
     weatherInfo = "Погода"
 )
 
+@Preview(showBackground = true)
 @Composable
-private fun ProfileButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    Box(
-        modifier = modifier
-            .size(64.dp)
-            .background(Color.Green)
-            .clickable { onClick() }
-
-    )
+private fun LoadingWeatherScreenPreview() {
+    WeatherTheme {
+        WeatherScreenContent(
+            state = MockLoadingWeatherState,
+            onIntent = { },
+            modifier = Modifier.fillMaxSize()
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun WeatherScreenPreview() {
-    WeatherScreenContent(
-        state = MockWeatherState,
-        listeners = MockWeatherListeners,
-        modifier = Modifier.fillMaxSize()
-    )
+private fun LoadedWeatherScreenPreview() {
+    WeatherTheme {
+        WeatherScreenContent(
+            state = MockLoadedWeatherState,
+            onIntent = { },
+            modifier = Modifier.fillMaxSize()
+        )
+    }
 }

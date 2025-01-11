@@ -1,19 +1,20 @@
 package com.michel.navigation.di
 
-import com.michel.navigation.presentation.navigation.base.NavApi
+import com.michel.navigation.presentation.navigation.NavApi
 import dagger.Component
 
 @NavScope
 @Component(
     modules = [
         NavApiModule::class,
-        NavModule::class,
     ],
     dependencies = [
         NavDependencies::class
     ]
 )
 internal interface NavComponent : NavApi {
+
+    fun getNavPresentationSubcomponent(): NavPresentationSubcomponent
 
     @Component.Factory
     interface Factory {

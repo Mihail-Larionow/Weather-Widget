@@ -20,10 +20,10 @@ import com.michel.mvi.compose.EdgeToEdgeDialog
 import com.michel.mvi.extensions.collectWhenStarted
 import com.michel.mvi.store.StoreViewModel
 import com.michel.mvi.store.StoreViewModelFactory
-import com.michel.ui.R
-import com.michel.ui.composables.bottomsheet.BottomSheetCornerStyle
-import com.michel.ui.composables.bottomsheet.WeatherModalBottomSheet
-import com.michel.ui.theme.WeatherTheme
+import com.michel.designsystem.R
+import com.michel.designsystem.composables.bottomsheet.BottomSheetCornerStyle
+import com.michel.designsystem.composables.bottomsheet.WeatherModalBottomSheet
+import com.michel.designsystem.theme.WeatherTheme
 import com.michel.utils.ViewModelFactoryProvider
 import kotlinx.coroutines.channels.Channel
 

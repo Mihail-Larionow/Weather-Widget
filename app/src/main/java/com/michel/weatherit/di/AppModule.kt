@@ -1,39 +1,35 @@
 package com.michel.weatherit.di
 
-import com.michel.mvi.store.Store
-import com.michel.mvi.store.StoreViewModel
-import com.michel.mvi.store.StoreViewModelFactory
-import com.michel.mvi.store.store
+import com.michel.impl.di.NetworkApi
+import com.michel.impl.di.NetworkComponentHolder
 import com.michel.navigation.di.NavComponentHolder
 import com.michel.navigation.di.NavDependencies
-import com.michel.navigation.presentation.navigation.base.NavApi
-import com.michel.network.di.NetworkModule
-import com.michel.ui.activity.ActivityRegistry
-import com.michel.weatherit.di.modules.ProfileModule
-import com.michel.weatherit.di.modules.WeatherModule
-import com.michel.weatherit.main.mvi.MainActor
-import com.michel.weatherit.main.mvi.MainReducer
-import com.michel.weatherit.main.mvi.entities.MainEffect
-import com.michel.weatherit.main.mvi.entities.MainIntent
-import com.michel.weatherit.main.mvi.entities.MainMessage
-import com.michel.weatherit.main.mvi.entities.MainState
+import com.michel.navigation.presentation.navigation.NavApi
+import com.michel.weatherit.di.modules.core.NetworkModule
+import com.michel.weatherit.di.modules.feature.AppInfoModule
+import com.michel.weatherit.di.modules.feature.ProfileModule
+import com.michel.weatherit.di.modules.feature.SettingsModule
+import com.michel.weatherit.di.modules.feature.WeatherModule
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
 import javax.inject.Singleton
-import kotlin.coroutines.EmptyCoroutineContext
 
 
 @Module(
     includes = [
         WeatherModule::class,
+        AppInfoModule::class,
         ProfileModule::class,
+        SettingsModule::class,
         NetworkModule::class,
     ]
 )
 class AppModule {
+
+    @Provides
+    fun provideNetworkApi(): NetworkApi = NetworkComponentHolder.get()
 
     @Provides
     fun provideNavFeatureApi(): NavApi = NavComponentHolder.get()
@@ -44,8 +40,5 @@ class AppModule {
 
     @Provides
     fun provideNavFeatureDependencies(
-        activityRegistry: ActivityRegistry,
-    ): NavDependencies = object : NavDependencies {
-        override val activityRegistry: ActivityRegistry = activityRegistry
-    }
+    ): NavDependencies = object : NavDependencies {}
 }

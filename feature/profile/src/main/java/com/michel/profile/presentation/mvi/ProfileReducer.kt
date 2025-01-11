@@ -7,7 +7,12 @@ import com.michel.profile.presentation.mvi.entities.ProfileState
 import javax.inject.Inject
 
 class ProfileReducer @Inject constructor() : Reducer<ProfileEffect, ProfileState, ProfileMessage> {
-    override fun reduce(message: ProfileMessage, prevState: ProfileState): ProfileState {
-        TODO("Not yet implemented")
+    override fun reduce(message: ProfileMessage, prevState: ProfileState): ProfileState =
+        when (message) {
+            is ProfileMessage.Navigate -> prevState
+        }
+
+    override fun reduceEffect(message: ProfileMessage): ProfileEffect? = when (message) {
+        is ProfileMessage.Navigate -> ProfileEffect.Navigate(message.direction)
     }
 }

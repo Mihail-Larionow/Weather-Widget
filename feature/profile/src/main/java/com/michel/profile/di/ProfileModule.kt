@@ -26,7 +26,7 @@ internal interface ProfileModule {
             ProfileComponentHolder.componentScope()
 
         @Provides
-        fun provideWeatherStore(
+        fun provideProfileStore(
             actor: ProfileActor,
             reducer: ProfileReducer,
         ): Store<ProfileIntent, ProfileEffect, ProfileState, ProfileMessage> =

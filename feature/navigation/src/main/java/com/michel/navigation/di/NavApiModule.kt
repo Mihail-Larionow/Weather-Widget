@@ -1,11 +1,11 @@
 package com.michel.navigation.di
 
-import com.michel.navigation.presentation.navapis.MainNavImpl
+import com.michel.api.FeatureNavApi
+import com.michel.appinformation.navigation.AppInfoNavDirection
+import com.michel.navigation.presentation.navapis.AppInfoNavImpl
 import com.michel.navigation.presentation.navapis.ProfileNavImpl
 import com.michel.navigation.presentation.navapis.SettingsNavImpl
 import com.michel.navigation.presentation.navapis.WeatherNavImpl
-import com.michel.navigation.base.FeatureNavApi
-import com.michel.navigation.presentation.navigation.MainNavDirection
 import com.michel.profile.navigation.ProfileNavDirection
 import com.michel.settings.navigation.SettingsNavDirection
 import com.michel.weather.navigation.WeatherNavDirection
@@ -16,14 +16,14 @@ import dagger.Module
 internal interface NavApiModule {
 
     @Binds
-    fun bindMainNavApi(impl: MainNavImpl): com.michel.navigation.base.FeatureNavApi<MainNavDirection>
+    fun bindAppInfoNavApi(impl: AppInfoNavImpl): FeatureNavApi<AppInfoNavDirection>
 
     @Binds
-    fun bindWeatherNavApi(impl: WeatherNavImpl): com.michel.navigation.base.FeatureNavApi<WeatherNavDirection>
+    fun bindWeatherNavApi(impl: WeatherNavImpl): FeatureNavApi<WeatherNavDirection>
 
     @Binds
-    fun bindProfileNavApi(impl: ProfileNavImpl): com.michel.navigation.base.FeatureNavApi<ProfileNavDirection>
+    fun bindProfileNavApi(impl: ProfileNavImpl): FeatureNavApi<ProfileNavDirection>
 
     @Binds
-    fun bindSettingsNavApi(impl: SettingsNavImpl): com.michel.navigation.base.FeatureNavApi<SettingsNavDirection>
+    fun bindSettingsNavApi(impl: SettingsNavImpl): FeatureNavApi<SettingsNavDirection>
 }

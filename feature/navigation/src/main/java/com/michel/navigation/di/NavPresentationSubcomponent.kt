@@ -2,16 +2,15 @@ package com.michel.navigation.di
 
 import com.michel.di.model.BaseApi
 import com.michel.di.scope.SubcomponentScope
-import com.michel.navigation.presentation.NavFragment
+import com.michel.navigation.domain.MainDestinationRegistrar
+import com.michel.navigation.presentation.MainNavViewModel
 import dagger.Subcomponent
+import javax.inject.Provider
 
 @SubcomponentScope
-@Subcomponent(
-    modules = [
-        NavModule::class,
-    ]
-)
-interface NavPresentationSubcomponent : BaseApi {
+@Subcomponent
+internal interface NavPresentationSubcomponent : BaseApi {
 
-    fun inject(fragment: NavFragment)
+    val viewModelProvider: Provider<MainNavViewModel>
+    val registrar: MainDestinationRegistrar
 }

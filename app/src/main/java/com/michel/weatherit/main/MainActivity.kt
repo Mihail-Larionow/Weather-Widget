@@ -1,28 +1,17 @@
 package com.michel.weatherit.main
 
-import android.os.Build
 import android.os.Bundle
+import androidx.compose.runtime.Composable
 import com.michel.mvi.MviActivity
 import com.michel.mvi.store.StoreViewModelFactory
-import com.michel.navigation.presentation.NavFragment
-import com.michel.navigation.presentation.navcontroller.NavControllerActivity
-import com.michel.navigation.presentation.navcontroller.NavControllerFragment
-import com.michel.weatherit.databinding.ActivityMainBinding
+import com.michel.navigation.presentation.MainNav
 import com.michel.weatherit.main.mvi.entities.MainEffect
 import com.michel.weatherit.main.mvi.entities.MainIntent
 import com.michel.weatherit.main.mvi.entities.MainMessage
 import com.michel.weatherit.main.mvi.entities.MainState
 import javax.inject.Inject
 
-
-class MainActivity : MviActivity<
-        MainIntent,
-        MainEffect,
-        MainState,
-        MainMessage,
-        >(), NavControllerActivity {
-
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : MviActivity<MainIntent, MainEffect, MainState, MainMessage>() {
 
     @Inject
     override lateinit var viewModelFactory: StoreViewModelFactory<MainIntent, MainEffect, MainState, MainMessage>
@@ -35,47 +24,19 @@ class MainActivity : MviActivity<
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (shouldUseSystemSplash()) {
-            splashScreen.setOnExitAnimationListener { systemSplashScreen ->
-                systemSplashScreen.remove()
-            }
-        }
-
-        if (!::binding.isInitialized) {
-            binding = ActivityMainBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-        }
         activityInitializer.init()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.accept(MainIntent.Stop)
-    }
-
-    override fun render(state: MainState) {
-
+    @Composable
+    override fun Render(state: MainState) {
+        MainNav()
     }
 
     override fun handleEffect(effect: MainEffect) {
         when (effect) {
-            is MainEffect.FinishSplash -> attachNavigation()
+            is MainEffect.FinishSplash -> {
+
+            }
         }
     }
-
-    override fun getNavControllerFragment(): NavControllerFragment? =
-        supportFragmentManager.fragments
-            .filterIsInstance<NavControllerFragment>()
-            .firstOrNull()
-
-    private fun attachNavigation() {
-        supportFragmentManager.beginTransaction()
-            .replace(
-                binding.mainActivityNavHost.id,
-                NavFragment.newInstance(),
-            )
-            .commitNow()
-    }
-
-    private fun shouldUseSystemSplash(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 }

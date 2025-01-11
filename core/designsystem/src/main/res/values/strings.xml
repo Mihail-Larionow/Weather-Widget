@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_weather_toolbar_title">Погодка</string>
+    <string name="feature_settings_toolbar_title">Настройки</string>
+    <string name="feature_settings_theme_toggle_title">Темная тема</string>
+    <string name="feature_settings_theme_toggle_subtitle">Установить темную тему приложения</string>
+</resources>

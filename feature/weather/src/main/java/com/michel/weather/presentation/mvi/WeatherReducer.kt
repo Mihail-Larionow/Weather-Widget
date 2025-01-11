@@ -15,7 +15,7 @@ class WeatherReducer @Inject constructor(
         message: WeatherMessage,
         prevState: WeatherState
     ): WeatherState = when (message) {
-        is WeatherMessage.WeatherDataLoaded -> weatherMapper.mapToState(message.weatherInitData)
+        is WeatherMessage.WeatherDataLoaded -> weatherMapper.mapToState(message.weatherData)
         is WeatherMessage.Navigate,
         is WeatherMessage.Empty,
             -> prevState
