@@ -4,13 +4,13 @@ import com.michel.mvi.store.Store
 import com.michel.mvi.store.StoreViewModel
 import com.michel.mvi.store.StoreViewModelFactory
 import com.michel.mvi.store.store
-import com.michel.weatherit.main.MainActivity
-import com.michel.weatherit.main.mvi.MainActor
-import com.michel.weatherit.main.mvi.MainReducer
-import com.michel.weatherit.main.mvi.entities.MainEffect
-import com.michel.weatherit.main.mvi.entities.MainIntent
-import com.michel.weatherit.main.mvi.entities.MainMessage
-import com.michel.weatherit.main.mvi.entities.MainState
+import com.michel.weatherit.main.presentation.MainActivity
+import com.michel.weatherit.main.presentation.mvi.MainActor
+import com.michel.weatherit.main.presentation.mvi.MainReducer
+import com.michel.weatherit.main.presentation.mvi.entities.MainEffect
+import com.michel.weatherit.main.presentation.mvi.entities.MainIntent
+import com.michel.weatherit.main.presentation.mvi.entities.MainMessage
+import com.michel.weatherit.main.presentation.mvi.entities.MainState
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,6 @@ import dagger.android.AndroidInjector
 import dagger.multibindings.ClassKey
 import dagger.multibindings.IntoMap
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
 import kotlin.coroutines.EmptyCoroutineContext
 
 @Module(

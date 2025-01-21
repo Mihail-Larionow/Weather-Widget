@@ -7,6 +7,7 @@ import com.michel.navigation.di.NavDependencies
 import com.michel.navigation.presentation.navigation.NavApi
 import com.michel.weatherit.di.modules.core.NetworkModule
 import com.michel.weatherit.di.modules.feature.AppInfoModule
+import com.michel.weatherit.di.modules.feature.DeeplinkModule
 import com.michel.weatherit.di.modules.feature.ProfileModule
 import com.michel.weatherit.di.modules.feature.SettingsModule
 import com.michel.weatherit.di.modules.feature.WeatherModule
@@ -23,6 +24,7 @@ import javax.inject.Singleton
         AppInfoModule::class,
         ProfileModule::class,
         SettingsModule::class,
+        DeeplinkModule::class,
         NetworkModule::class,
     ]
 )
@@ -39,6 +41,7 @@ class AppModule {
     fun provideCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     @Provides
-    fun provideNavFeatureDependencies(
-    ): NavDependencies = object : NavDependencies {}
+    fun provideNavFeatureDependencies(): NavDependencies = object : NavDependencies {
+
+    }
 }

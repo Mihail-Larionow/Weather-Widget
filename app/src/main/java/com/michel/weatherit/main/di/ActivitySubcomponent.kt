@@ -1,6 +1,6 @@
 package com.michel.weatherit.main.di
 
-import com.michel.weatherit.main.MainActivity
+import com.michel.weatherit.main.presentation.MainActivity
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
 

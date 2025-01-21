@@ -10,12 +10,13 @@ import javax.inject.Inject
 internal class ProfileNavImpl @Inject constructor(
     private val mainNavController: MainNavController,
 ) : FeatureNavApi<ProfileNavDirection> {
+
     override fun navigate(direction: ProfileNavDirection) {
         mainNavController.run {
             when (direction) {
-                ProfileNavDirection.Up -> navigateUp()
-                ProfileNavDirection.AppInfo -> navigate(AppInfoRoute)
-                ProfileNavDirection.Settings -> navigate(SettingsRoute)
+                is ProfileNavDirection.Up -> navigateUp()
+                is ProfileNavDirection.AppInfo -> navigate(AppInfoRoute)
+                is ProfileNavDirection.Settings -> navigate(SettingsRoute)
             }
         }
     }

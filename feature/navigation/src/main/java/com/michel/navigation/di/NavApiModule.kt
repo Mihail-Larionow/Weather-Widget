@@ -2,7 +2,9 @@ package com.michel.navigation.di
 
 import com.michel.api.FeatureNavApi
 import com.michel.appinformation.navigation.AppInfoNavDirection
+import com.michel.deeplinks.navigation.DeeplinkNavDirection
 import com.michel.navigation.presentation.navapis.AppInfoNavImpl
+import com.michel.navigation.presentation.navapis.DeeplinkNavImpl
 import com.michel.navigation.presentation.navapis.ProfileNavImpl
 import com.michel.navigation.presentation.navapis.SettingsNavImpl
 import com.michel.navigation.presentation.navapis.WeatherNavImpl
@@ -26,4 +28,7 @@ internal interface NavApiModule {
 
     @Binds
     fun bindSettingsNavApi(impl: SettingsNavImpl): FeatureNavApi<SettingsNavDirection>
+
+    @Binds
+    fun bindDeeplinkNavApi(impl: DeeplinkNavImpl): FeatureNavApi<DeeplinkNavDirection>
 }
