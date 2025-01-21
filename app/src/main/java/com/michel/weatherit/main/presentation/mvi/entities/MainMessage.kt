@@ -1,4 +1,4 @@
-package com.michel.weatherit.main.mvi.entities
+package com.michel.weatherit.main.presentation.mvi.entities
 
 sealed interface MainMessage {
     data object Empty : MainMessage

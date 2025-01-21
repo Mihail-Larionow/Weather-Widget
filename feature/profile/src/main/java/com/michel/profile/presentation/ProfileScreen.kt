@@ -61,6 +61,5 @@ private fun ProfileScreen(
     ProfileScreenContent(
         state = state.value,
         onIntent = intentConsumer,
-        modifier = Modifier.fillMaxSize()
     )
 }

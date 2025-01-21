@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.michel.designsystem.theme.WeatherTheme
 import com.michel.profile.presentation.mvi.entities.ProfileIntent
 import com.michel.profile.presentation.mvi.entities.ProfileState
 
@@ -24,34 +27,26 @@ internal fun ProfileScreenContent(
     onIntent: (ProfileIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Red)
-    ) {
-        OptionButtons(
-            onIntent = onIntent,
-            modifier = Modifier.align(Alignment.Center),
-        )
-
-        BackButton(
-            onClick = { onIntent(ProfileIntent.BackClicked) },
-            modifier = Modifier.align(Alignment.TopStart)
-        )
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            ProfileToolbar(
+                onBackClick = { onIntent(ProfileIntent.BackClicked) },
+            )
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(WeatherTheme.colors.backgroundSecondary)
+        ) {
+            OptionButtons(
+                onIntent = onIntent,
+                modifier = Modifier.align(Alignment.Center),
+            )
+        }
     }
-}
-
-@Composable
-private fun BackButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    Box(
-        modifier = modifier
-            .size(64.dp)
-            .background(Color.Green)
-            .clickable { onClick() }
-    )
 }
 
 @Composable

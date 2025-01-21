@@ -10,12 +10,13 @@ import javax.inject.Inject
 internal class WeatherNavImpl @Inject constructor(
     private val mainNavController: MainNavController,
 ) : FeatureNavApi<WeatherNavDirection> {
+
     override fun navigate(direction: WeatherNavDirection) {
         mainNavController.run {
             when (direction) {
-                WeatherNavDirection.Up -> navigateUp()
-                WeatherNavDirection.ToProfile -> navigate(ProfileRoute)
-                WeatherNavDirection.ToSettings -> navigate(SettingsRoute)
+                is WeatherNavDirection.Up -> navigateUp()
+                is WeatherNavDirection.ToProfile -> navigate(ProfileRoute)
+                is WeatherNavDirection.ToSettings -> navigate(SettingsRoute)
             }
         }
     }

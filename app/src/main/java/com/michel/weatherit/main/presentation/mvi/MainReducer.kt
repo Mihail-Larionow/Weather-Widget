@@ -1,9 +1,9 @@
-package com.michel.weatherit.main.mvi
+package com.michel.weatherit.main.presentation.mvi
 
 import com.michel.mvi.store.Reducer
-import com.michel.weatherit.main.mvi.entities.MainEffect
-import com.michel.weatherit.main.mvi.entities.MainMessage
-import com.michel.weatherit.main.mvi.entities.MainState
+import com.michel.weatherit.main.presentation.mvi.entities.MainEffect
+import com.michel.weatherit.main.presentation.mvi.entities.MainMessage
+import com.michel.weatherit.main.presentation.mvi.entities.MainState
 import javax.inject.Inject
 
 class MainReducer @Inject constructor() : Reducer<MainEffect, MainState, MainMessage> {

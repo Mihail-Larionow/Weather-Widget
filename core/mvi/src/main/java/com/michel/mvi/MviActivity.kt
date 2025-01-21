@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.michel.designsystem.theme.WeatherTheme
 import com.michel.mvi.extensions.collectWhenStarted
 import com.michel.mvi.store.StoreViewModel
 import com.michel.mvi.store.StoreViewModelFactory
-import com.michel.designsystem.theme.WeatherTheme
 import com.michel.utils.ViewModelFactoryProvider
 import dagger.android.support.DaggerAppCompatActivity
 

@@ -2,6 +2,7 @@ package com.michel.weatherit.di
 
 import android.content.Context
 import com.michel.weatherit.WeatherApplication
+import com.michel.weatherit.di.modules.feature.DeeplinkModule
 import com.michel.weatherit.main.di.ActivityModule
 import dagger.BindsInstance
 import dagger.Component

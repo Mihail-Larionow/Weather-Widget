@@ -35,6 +35,30 @@ jobs:
           name: LintReport.html
           path: app/build/reports/lint-results-release.html
 
+  MANIFEST-GUARD:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: 17
+          distribution: "temurin"
+
+      - name: Get Permissions
+        run: chmod +x ./gradlew
+
+      - name: Check for manifest correctness
+        run: ./gradlew compareDebugMergedManifest
+
+      - name: Upload ManifestGuard Report
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: ManifestGuardReport.html
+          path: app/build/outputs/manifest_guard/diff.html
+
   UNIT-TESTS:
     runs-on: ubuntu-latest
     steps:

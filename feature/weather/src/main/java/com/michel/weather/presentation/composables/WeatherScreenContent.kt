@@ -30,6 +30,7 @@ internal fun WeatherScreenContent(
     ) { paddingValues ->
         Box(
             modifier = modifier
+                .fillMaxSize()
                 .padding(paddingValues)
                 .background(WeatherTheme.colors.backgroundSecondary)
         ) {
@@ -73,7 +74,6 @@ private fun LoadedWeatherScreenPreview() {
         WeatherScreenContent(
             state = MockLoadedWeatherState,
             onIntent = { },
-            modifier = Modifier.fillMaxSize()
         )
     }
 }

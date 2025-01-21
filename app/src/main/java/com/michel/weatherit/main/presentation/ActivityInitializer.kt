@@ -1,4 +1,4 @@
-package com.michel.weatherit.main
+package com.michel.weatherit.main.presentation
 
 import android.Manifest
 import android.content.pm.PackageManager
