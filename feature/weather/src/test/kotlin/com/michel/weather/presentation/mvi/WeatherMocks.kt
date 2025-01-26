@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 object WeatherMocks {
 
-    var weatherData = WeatherDomainModel("")
+    var weatherData = WeatherDomainModel(emptyList())
 
-    val fullyWeatherData = WeatherDomainModel("33")
+    val fullyWeatherData = WeatherDomainModel(listOf(33.0))
 
     val weatherDataRepository: WeatherDataRepository = object : WeatherDataRepository {
 

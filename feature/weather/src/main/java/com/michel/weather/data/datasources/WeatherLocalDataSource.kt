@@ -8,5 +8,5 @@ import javax.inject.Singleton
 @Singleton
 class WeatherLocalDataSource @Inject constructor() {
 
-    val weatherDataState = MutableStateFlow(WeatherDomainModel("33"))
+    val weatherDataState = MutableStateFlow(WeatherDomainModel(listOf(39.0)))
 }

@@ -1,42 +1,30 @@
-package com.michel.appinformation.presentation
+package com.michel.appinformation.presentation.composables
 
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.michel.appinformation.di.AppInfoComponentHolder
-import com.michel.appinformation.di.AppInfoInternalApi
 import com.michel.appinformation.presentation.mvi.entities.AppInfoEffect
 import com.michel.appinformation.presentation.mvi.entities.AppInfoIntent
-import com.michel.appinformation.presentation.mvi.entities.AppInfoMessage
 import com.michel.appinformation.presentation.mvi.entities.AppInfoState
-import com.michel.mvi.store.StoreViewModel
+import com.michel.designsystem.theme.WeatherTheme
 
 @Composable
-fun AppInfoScreen() {
-    val internalApi = remember { AppInfoComponentHolder.internalApi }
+fun AppInfo() {
     DisposableEffect(AppInfoComponentHolder) {
         AppInfoComponentHolder.get()
         onDispose {
             AppInfoComponentHolder.clear()
         }
     }
-    AppInfoScreen(
-        viewModel = viewModel<StoreViewModel<AppInfoIntent, AppInfoEffect, AppInfoState, AppInfoMessage>> {
-            internalApi.viewModelFactory.create()
-        },
-        internalApi = internalApi,
-    )
-}
 
-@Composable
-private fun AppInfoScreen(
-    viewModel: StoreViewModel<AppInfoIntent, AppInfoEffect, AppInfoState, AppInfoMessage>,
-    internalApi: AppInfoInternalApi,
-) {
+    val internalApi = remember { AppInfoComponentHolder.internalApi }
+    val viewModel = viewModel { internalApi.viewModelFactory.create() }
+
     LaunchedEffect(viewModel) {
         viewModel.effects.collect { effect ->
             when (effect) {
@@ -44,16 +32,9 @@ private fun AppInfoScreen(
             }
         }
     }
+
     AppInfoScreen(
-        state = viewModel.state.collectAsState(),
-        intentConsumer = viewModel::accept,
+        state = viewModel.state.collectAsState().value,
+        onIntent = viewModel::accept,
     )
-}
-
-@Composable
-private fun AppInfoScreen(
-    state: State<AppInfoState>,
-    intentConsumer: (AppInfoIntent) -> Unit,
-) {
-
 }

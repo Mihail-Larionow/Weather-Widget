@@ -2,6 +2,9 @@ package com.michel.settings.presentation.mvi.entities
 
 import com.michel.settings.domain.model.SettingsItem
 
-data class SettingsState(
-    val items: List<SettingsItem> = emptyList(),
-)
+sealed interface SettingsState {
+    data object Loading : SettingsState
+    data class Loaded(
+        val items: List<SettingsItem> = emptyList(),
+    ) : SettingsState
+}

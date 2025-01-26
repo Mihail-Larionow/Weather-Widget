@@ -31,7 +31,7 @@ internal interface SettingsModule {
             reducer: SettingsReducer,
         ): Store<SettingsIntent, SettingsEffect, SettingsState, SettingsMessage> =
             store(
-                initialState = SettingsState(),
+                initialState = SettingsState.Loading,
                 scope = CoroutineScope(EmptyCoroutineContext),
             ) {
                 this.actor = actor

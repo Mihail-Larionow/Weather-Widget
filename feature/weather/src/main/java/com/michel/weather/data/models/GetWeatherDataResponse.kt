@@ -11,8 +11,8 @@ data class GetWeatherDataResponse(
     @SerializedName("timezone") var timezone: String? = null,
     @SerializedName("timezone_abbreviation") var timezoneAbbreviation: String? = null,
     @SerializedName("elevation") var elevation: Int? = null,
-    @SerializedName("hourly_units") var hourlyUnits: HourlyUnits? = HourlyUnits(),
-    @SerializedName("hourly") var hourly: Hourly? = Hourly()
+    @SerializedName("hourly_units") var hourlyUnits: HourlyUnits = HourlyUnits(),
+    @SerializedName("hourly") var hourly: Hourly = Hourly()
 
 )
 

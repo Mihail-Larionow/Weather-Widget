@@ -8,6 +8,10 @@ internal class WeatherMapperImpl @Inject constructor() : WeatherMapper {
 
     override fun mapToState(domainWeatherData: WeatherDomainModel): WeatherState.Loaded {
         val weatherInfo = domainWeatherData.temperature
-        return WeatherState.Loaded(weatherInfo = weatherInfo)
+        return WeatherState.Loaded(
+            temperature = weatherInfo.map {
+                it.toInt()
+            },
+        )
     }
 }

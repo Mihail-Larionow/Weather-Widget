@@ -7,6 +7,13 @@ import androidx.compose.ui.unit.sp
 
 @Immutable
 data class WeatherTypography(
+    val main: TextStyle = TextStyle(
+        fontSize = 32.sp,
+        lineHeight = 36.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false,
+        ),
+    ),
     val title1: TextStyle = TextStyle(
         fontSize = 20.sp,
         lineHeight = 24.sp,

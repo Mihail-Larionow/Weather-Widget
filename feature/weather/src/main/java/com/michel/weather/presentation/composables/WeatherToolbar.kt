@@ -1,6 +1,7 @@
 package com.michel.weather.presentation.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import com.michel.designsystem.composables.buttons.icon.IconButtonSize
 import com.michel.designsystem.composables.preview.ThemePreviews
 import com.michel.designsystem.composables.toolbar.Toolbar
 import com.michel.designsystem.theme.WeatherTheme
+import com.michel.weather.presentation.composables.colors.weatherBackground
 
 @Composable
 internal fun WeatherToolbar(
@@ -21,34 +23,33 @@ internal fun WeatherToolbar(
 ) {
     Toolbar(
         center = {
-            Title(
-                text = WeatherTheme.strings.weather.toolbarTitle,
-            )
+            Title()
         },
         left = {
             ProfileButton(
                 onProfileClick = onProfileClick,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier.align(Alignment.CenterEnd),
             )
         },
         right = {
             SettingsButton(
                 onSettingsClick = onSettingsClick,
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier.align(Alignment.CenterStart),
             )
         },
-        modifier = modifier.background(WeatherTheme.colors.backgroundPrimary),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.Transparent)
     )
 }
 
 @Composable
 private fun Title(
-    text: String,
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = text,
-        color = WeatherTheme.colors.textSecondary,
+        text = WeatherTheme.strings.weather.toolbarTitle,
+        color = Color.White,
         style = WeatherTheme.typography.title1,
         modifier = modifier,
     )
@@ -67,7 +68,7 @@ private fun SettingsButton(
     ) {
         Icon(
             painter = WeatherTheme.icons.ic32.settings,
-            tint = WeatherTheme.colors.iconsSecondary,
+            tint = Color.White,
             contentDescription = null,
         )
     }
@@ -86,7 +87,7 @@ private fun ProfileButton(
     ) {
         Icon(
             painter = WeatherTheme.icons.ic32.profilePlaceholder,
-            tint = WeatherTheme.colors.iconsSecondary,
+            tint = Color.White,
             contentDescription = null,
         )
     }
@@ -94,11 +95,11 @@ private fun ProfileButton(
 
 @ThemePreviews
 @Composable
-private fun WeatherToolbarPreview() {
-    WeatherTheme {
-        WeatherToolbar(
-            onProfileClick = { },
-            onSettingsClick = { },
-        )
-    }
+private fun WeatherToolbarPreview() = WeatherTheme {
+    WeatherToolbar(
+        onProfileClick = { },
+        onSettingsClick = { },
+        modifier = Modifier.weatherBackground(),
+    )
 }
+

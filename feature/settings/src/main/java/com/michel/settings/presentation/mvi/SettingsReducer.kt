@@ -10,7 +10,7 @@ class SettingsReducer @Inject constructor() :
     Reducer<SettingsEffect, SettingsState, SettingsMessage> {
     override fun reduce(message: SettingsMessage, prevState: SettingsState): SettingsState =
         when (message) {
-            is SettingsMessage.UpdateSettingsList -> prevState.copy(items = message.items)
+            is SettingsMessage.UpdateSettingsList -> SettingsState.Loaded(items = message.items)
             is SettingsMessage.Navigate,
             is SettingsMessage.Empty,
                 -> prevState

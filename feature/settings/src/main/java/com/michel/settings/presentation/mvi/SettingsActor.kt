@@ -31,8 +31,8 @@ class SettingsActor @Inject constructor() : Actor<SettingsIntent, SettingsState,
     private fun MutableList<SettingsItem>.addThemeToggle() {
         add(
             SettingsItem.Toggle(
-                ToggleType.THEME,
-                true,
+                toggleType = ToggleType.THEME,
+                isEnabled = true,
             )
         )
     }

@@ -7,7 +7,7 @@ sealed interface WeatherState {
 
     @Immutable
     data class Loaded(
-        val weatherInfo: String = "",
+        val temperature: List<Int> = emptyList(),
     ) : WeatherState
 }
 
