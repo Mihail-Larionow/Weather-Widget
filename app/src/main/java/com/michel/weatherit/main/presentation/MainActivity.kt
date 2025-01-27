@@ -3,13 +3,12 @@ package com.michel.weatherit.main.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.michel.deeplinks.presentation.DeeplinkHost
+import com.michel.designsystem.composables.snackbar.SnackbarHost
 import com.michel.mvi.MviActivity
 import com.michel.mvi.store.StoreViewModelFactory
-import com.michel.navigation.presentation.MainNav
+import com.michel.navigation.presentation.NavigationHost
 import com.michel.weatherit.main.presentation.mvi.entities.MainEffect
 import com.michel.weatherit.main.presentation.mvi.entities.MainIntent
 import com.michel.weatherit.main.presentation.mvi.entities.MainMessage
@@ -39,8 +38,10 @@ class MainActivity : MviActivity<MainIntent, MainEffect, MainState, MainMessage>
 
     @Composable
     override fun Render(state: MainState) {
-        MainNav()
-        DeeplinkHost()
+        SnackbarHost {
+            NavigationHost()
+            DeeplinkHost()
+        }
     }
 
     override fun handleEffect(effect: MainEffect) {

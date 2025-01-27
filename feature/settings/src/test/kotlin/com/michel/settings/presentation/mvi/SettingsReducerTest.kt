@@ -10,7 +10,7 @@ import org.junit.Test
 
 class SettingsReducerTest {
 
-    private val settingsState = SettingsState()
+    private val settingsLoadingState = SettingsState.Loading
 
     private val settingsReducer = SettingsReducer()
 
@@ -18,8 +18,8 @@ class SettingsReducerTest {
     fun `when navigate message is received then return navigation effect`() {
         settingsReducer.reduce(
             message = SettingsMessage.Navigate(SettingsNavDirection.Up),
-            prevState = settingsState,
-        ).shouldBe(settingsState)
+            prevState = settingsLoadingState,
+        ).shouldBe(settingsLoadingState)
         settingsReducer.reduceEffect(
             message = SettingsMessage.Navigate(SettingsNavDirection.Up),
         ).shouldBe(SettingsEffect.Navigate(SettingsNavDirection.Up))

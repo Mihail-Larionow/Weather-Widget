@@ -11,7 +11,7 @@ import com.michel.navigation.di.NavPresentationSubcomponent
 private const val PRESENTATION_SUBCOMPONENT_DATA = 0
 
 @Composable
-fun MainNav() {
+fun NavigationHost() {
     val subcomponent = remember {
         NavComponentHolder
             .getSubcomponent<NavPresentationSubcomponent>(PRESENTATION_SUBCOMPONENT_DATA)

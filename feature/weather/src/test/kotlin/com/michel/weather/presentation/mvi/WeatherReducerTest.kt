@@ -5,22 +5,17 @@ import com.michel.weather.navigation.WeatherNavDirection
 import com.michel.weather.presentation.mvi.entities.WeatherEffect
 import com.michel.weather.presentation.mvi.entities.WeatherMessage
 import com.michel.weather.presentation.mvi.entities.WeatherState
-import com.michel.weather.presentation.mvi.entities.mapper.WeatherMapper
 import io.kotest.matchers.shouldBe
 import org.junit.Test
 
 class WeatherReducerTest {
 
     private val weatherStateLoading = WeatherState.Loading
-    private val weatherStateLoaded = WeatherState.Loaded()
-
-    private val dummyWeatherMapper = WeatherMapper { _ ->
-        weatherStateLoaded
-    }
-
-    private val weatherReducer = WeatherReducer(
-        weatherMapper = dummyWeatherMapper,
+    private val weatherStateLoaded = WeatherState.Loaded(
+        temperature = WeatherMocks.temperatures,
     )
+
+    private val weatherReducer = WeatherReducer()
 
     @Test
     fun `when weather data loaded then reduce state`() {

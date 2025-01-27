@@ -26,7 +26,7 @@ class SettingsActorTest {
     fun `when back clicked then return navigation message`() = runTurbineTest {
         settingsActor.run(
             intent = SettingsIntent.BackClicked,
-            prevState = SettingsState(),
+            prevState = SettingsState.Loading,
         ).test {
             val message = awaitItem()
             message.shouldBeInstanceOf<SettingsMessage.Navigate>()

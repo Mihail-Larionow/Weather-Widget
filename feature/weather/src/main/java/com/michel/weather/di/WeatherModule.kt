@@ -12,8 +12,6 @@ import com.michel.weather.presentation.mvi.entities.WeatherEffect
 import com.michel.weather.presentation.mvi.entities.WeatherIntent
 import com.michel.weather.presentation.mvi.entities.WeatherMessage
 import com.michel.weather.presentation.mvi.entities.WeatherState
-import com.michel.weather.presentation.mvi.entities.mapper.WeatherMapper
-import com.michel.weather.presentation.mvi.entities.mapper.WeatherMapperImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -28,11 +26,6 @@ internal interface WeatherModule {
     fun bindWeatherDataRepository(
         weatherDataRepositoryImpl: WeatherDataRepositoryImpl,
     ): WeatherDataRepository
-
-    @Binds
-    fun bindWeatherMapper(
-        weatherMapperImpl: WeatherMapperImpl,
-    ): WeatherMapper
 
     companion object {
         @Singleton
