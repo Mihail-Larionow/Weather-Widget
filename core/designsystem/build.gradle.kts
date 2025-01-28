@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    api(libs.haze)
     api(libs.androidx.ui)
     api(libs.androidx.ui.tooling)
     api(libs.androidx.material.android)

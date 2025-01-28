@@ -20,12 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.michel.designsystem.composables.Skeleton
+import com.michel.designsystem.composables.blur.blurredBackground
 import com.michel.designsystem.composables.extensions.clickableWithRipple
 import com.michel.designsystem.composables.extensions.elevation
 import com.michel.designsystem.composables.extensions.isScrolled
@@ -34,6 +36,7 @@ import com.michel.weather.presentation.composables.colors.weatherBackground
 import com.michel.weather.presentation.composables.info.WeatherList
 import com.michel.weather.presentation.mvi.entities.WeatherIntent
 import com.michel.weather.presentation.mvi.entities.WeatherState
+import dev.chrisbanes.haze.HazeState
 
 private val DefaultCornerSize = 32.dp
 
@@ -104,6 +107,7 @@ private fun LoadedContent(
     onIntent: (WeatherIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val hazeState = remember { HazeState() }
     val scrollState = rememberLazyListState()
     val isListScrolled = remember { derivedStateOf { scrollState.isScrolled() } }
 
@@ -115,7 +119,13 @@ private fun LoadedContent(
     LazyColumn(
         state = scrollState,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .blurredBackground(
+                hazeState = hazeState,
+                blurBackgroundColor = WeatherTheme.colors.backgroundPrimary,
+                fallbackColor = WeatherTheme.colors.backgroundLine,
+            ),
     ) {
         stickyHeader {
             MainWeatherInfo(
@@ -142,9 +152,7 @@ private fun LoadedContent(
         item {
             WeatherList(
                 items = state.temperature,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp, bottom = 20.dp),
+                modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),
             )
         }
     }

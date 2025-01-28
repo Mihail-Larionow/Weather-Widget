@@ -49,7 +49,7 @@ private fun Title(
 ) {
     Text(
         text = WeatherTheme.strings.weather.toolbarTitle,
-        color = Color.White,
+        color = WeatherTheme.colors.constantWhite,
         style = WeatherTheme.typography.title1,
         modifier = modifier,
     )
@@ -68,7 +68,7 @@ private fun SettingsButton(
     ) {
         Icon(
             painter = WeatherTheme.icons.ic32.settings,
-            tint = Color.White,
+            tint = WeatherTheme.colors.constantWhite,
             contentDescription = null,
         )
     }
@@ -87,7 +87,7 @@ private fun ProfileButton(
     ) {
         Icon(
             painter = WeatherTheme.icons.ic32.profilePlaceholder,
-            tint = Color.White,
+            tint = WeatherTheme.colors.constantWhite,
             contentDescription = null,
         )
     }
