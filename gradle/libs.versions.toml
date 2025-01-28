@@ -1,6 +1,7 @@
 [versions]
 agp = "8.6.1"
 animationAndroid = "1.7.6"
+detekt = "1.23.7"
 gson = "2.10.1"
 kotlin = "2.0.0"
 kotlinx-coroutines = "1.9.0"
@@ -103,4 +104,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 manifest-guard = { id = "com.dpforge.manifestguard", version.ref = "manifest-guard" }
-
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
