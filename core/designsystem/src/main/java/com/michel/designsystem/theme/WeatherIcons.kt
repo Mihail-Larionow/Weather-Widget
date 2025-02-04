@@ -19,13 +19,17 @@ class Ic32 internal constructor() {
         @Composable
         get() = painterResource(id = drawableR.icon_32_back)
 
-    val settings: Painter
+    val error: Painter
         @Composable
-        get() = painterResource(id = drawableR.icon_32_settings)
+        get() = painterResource(id = drawableR.icon_32_error)
 
     val profilePlaceholder: Painter
         @Composable
         get() = painterResource(id = drawableR.icon_32_profile_placeholder)
+
+    val settings: Painter
+        @Composable
+        get() = painterResource(id = drawableR.icon_32_settings)
 }
 
 class Ic64 internal constructor() {

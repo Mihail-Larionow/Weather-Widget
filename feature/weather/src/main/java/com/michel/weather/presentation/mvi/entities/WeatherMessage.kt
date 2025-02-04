@@ -7,5 +7,5 @@ sealed interface WeatherMessage {
     data object Empty : WeatherMessage
     data class WeatherDataLoaded(val weatherData: Weather) : WeatherMessage
     data class Navigate(val direction: WeatherNavDirection) : WeatherMessage
-    data class ShowInfoSnackbar(val text: String) : WeatherMessage
+    data class WeatherDataLoadFailed(val exception: Throwable) : WeatherMessage
 }

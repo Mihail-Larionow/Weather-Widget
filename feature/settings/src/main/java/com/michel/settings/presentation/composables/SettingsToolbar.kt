@@ -70,6 +70,8 @@ private fun Title(
 @Composable
 private fun SettingsToolbarPreview() {
     WeatherTheme {
-        SettingsToolbar(onBackClick = { })
+        SettingsToolbar(
+            onBackClick = { },
+        )
     }
 }

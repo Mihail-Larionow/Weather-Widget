@@ -1,16 +1,16 @@
 package com.michel.designsystem.composables.snackbar
 
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
 sealed interface SnackbarLayout {
     data class Toast(
-        val text: String,
+        @StringRes val textResId: Int,
     ) : SnackbarLayout
 
-    data class WithActionButton(
-        val text: String,
-        val icon: Painter,
-        val buttonTitle: String,
+    data class ErrorWithButton(
+        @StringRes val textResId: Int,
+        @StringRes val buttonTitleResId: Int,
         val onButtonClick: () -> Unit,
     ) : SnackbarLayout
 }

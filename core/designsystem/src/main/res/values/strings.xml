@@ -5,6 +5,8 @@
     <string name="common_strings_weather">Погодка</string>
     <string name="common_strings_settings">Настройки</string>
     <string name="common_strings_app_info">О приложении</string>
+    <string name="common_strings_celsius_degree">\u2103</string>
+    <string name="common_strings_unknown_exception_text">Неизвестная ошибка</string>
 
-    <string name="feature_weather_strings_celsius_degree">\u2103</string>
+    <string name="feature_weather_snackbar_button_reload_title">ПОВТОРИТЬ</string>
 </resources>

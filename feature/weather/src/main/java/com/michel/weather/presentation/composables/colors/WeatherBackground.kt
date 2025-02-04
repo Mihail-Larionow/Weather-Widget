@@ -19,8 +19,8 @@ internal fun Modifier.weatherBackground(
     shape: Shape = RectangleShape,
 ): Modifier = composed {
     val gradient = Brush.horizontalGradient(
-        .0f to WeatherColors.first,
-        .99f to WeatherColors.second,
+        0.0f to WeatherColors.first,
+        1.0f to WeatherColors.second,
     )
 
     this.background(

@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,6 +32,7 @@ import com.michel.designsystem.composables.blur.blurredBackground
 import com.michel.designsystem.composables.extensions.clickableWithRipple
 import com.michel.designsystem.composables.extensions.elevation
 import com.michel.designsystem.composables.extensions.isScrolled
+import com.michel.designsystem.composables.preview.ThemePreviews
 import com.michel.designsystem.theme.WeatherTheme
 import com.michel.weather.presentation.composables.colors.weatherBackground
 import com.michel.weather.presentation.composables.info.WeatherList
@@ -38,20 +40,20 @@ import com.michel.weather.presentation.mvi.entities.WeatherIntent
 import com.michel.weather.presentation.mvi.entities.WeatherState
 import dev.chrisbanes.haze.HazeState
 
-private val DefaultCornerSize = 32.dp
+private val DefaultCornerSize = 16.dp
 
 @Composable
 internal fun WeatherScreen(
     state: WeatherState,
     onIntent: (WeatherIntent) -> Unit,
 ) {
-    Scaffold(
-        backgroundColor = WeatherTheme.colors.backgroundSecondary,
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         WeatherContent(
             state = state,
             onIntent = onIntent,
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .weatherBackground()
+                .padding(paddingValues),
         )
     }
 }
@@ -100,7 +102,6 @@ private fun LoadingContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LoadedContent(
     state: WeatherState.Loaded,
@@ -109,50 +110,35 @@ private fun LoadedContent(
 ) {
     val hazeState = remember { HazeState() }
     val scrollState = rememberLazyListState()
-    val isListScrolled = remember { derivedStateOf { scrollState.isScrolled() } }
-
-    val elevation by animateDpAsState(
-        targetValue = if (isListScrolled.value) 4.dp else 0.dp,
-        label = "elevation",
-    )
 
     LazyColumn(
         state = scrollState,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .blurredBackground(
-                hazeState = hazeState,
-                blurBackgroundColor = WeatherTheme.colors.backgroundPrimary,
-                fallbackColor = WeatherTheme.colors.backgroundLine,
-            ),
+        modifier = modifier.fillMaxWidth()
     ) {
-        stickyHeader {
+        item {
             MainWeatherInfo(
                 state = state,
                 onIntent = onIntent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .elevation(
-                        elevation,
-                        shape = RoundedCornerShape(
-                            bottomStart = DefaultCornerSize,
-                            bottomEnd = DefaultCornerSize,
-                        ),
-                    )
-                    .weatherBackground(
-                        shape = RoundedCornerShape(
-                            bottomStart = DefaultCornerSize,
-                            bottomEnd = DefaultCornerSize,
-                        ),
-                    )
                     .padding(bottom = 32.dp),
             )
         }
         item {
             WeatherList(
                 items = state.temperature,
-                modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),
+                modifier = Modifier
+                    .padding(
+                        vertical = 16.dp,
+                        horizontal = 12.dp,
+                    )
+                    .clip(RoundedCornerShape(16.dp))
+                    .blurredBackground(
+                        hazeState = hazeState,
+                        blurBackgroundColor = WeatherTheme.colors.constantBlack.copy(alpha = 0.1f),
+                        fallbackColor = WeatherTheme.colors.constantBlack,
+                    ),
             )
         }
     }
@@ -166,7 +152,7 @@ private fun MainWeatherInfo(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(DefaultCornerSize),
         modifier = modifier,
     ) {
         WeatherToolbar(
@@ -212,12 +198,13 @@ private fun Temperature(
     }
 }
 
-@Preview(showBackground = true)
+@ThemePreviews
 @Composable
 private fun LoadedWeatherScreenPreview() = WeatherTheme {
+    val temperatures = listOf(30, 31, 32, 34, 31, 30, 28, 24, 20, 14, 8, 2, -2)
     WeatherScreen(
         state = WeatherState.Loaded(
-            temperature = listOf(34)
+            temperature = temperatures,
         ),
         onIntent = { },
     )

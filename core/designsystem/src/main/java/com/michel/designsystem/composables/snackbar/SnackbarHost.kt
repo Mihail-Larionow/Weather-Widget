@@ -11,7 +11,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.michel.designsystem.theme.WeatherTheme
 
 @Composable
 fun SnackbarHost(
@@ -66,13 +69,14 @@ private fun Snackbar(
 ) {
     when (layout) {
         is SnackbarLayout.Toast -> Toast(
-            text = layout.text,
+            text = stringResource(id = layout.textResId),
         )
 
-        is SnackbarLayout.WithActionButton -> Snackbar(
-            text = layout.text,
-            icon = layout.icon,
-            buttonTitle = layout.buttonTitle,
+        is SnackbarLayout.ErrorWithButton -> Snackbar(
+            text = stringResource(id = layout.textResId),
+            icon = WeatherTheme.icons.ic32.error,
+            iconTint = WeatherTheme.colors.iconsError,
+            buttonTitle = stringResource(id = layout.buttonTitleResId),
             onButtonClick = layout.onButtonClick,
             modifier = modifier,
         )

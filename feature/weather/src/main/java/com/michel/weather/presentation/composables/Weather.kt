@@ -10,7 +10,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.michel.designsystem.composables.snackbar.Snackbar
 import com.michel.designsystem.composables.snackbar.SnackbarLayout
 import com.michel.weather.di.WeatherComponentHolder
+import com.michel.weather.presentation.models.SnackbarData
 import com.michel.weather.presentation.mvi.entities.WeatherEffect
+import com.michel.weather.presentation.mvi.entities.WeatherIntent
 
 @Composable
 fun WeatherScreen() {
@@ -26,10 +28,8 @@ fun WeatherScreen() {
         viewModel.effects.collect { effect ->
             when (effect) {
                 is WeatherEffect.Navigate -> internalApi.navApi.navigate(effect.direction)
-                is WeatherEffect.ShowInfoSnackbar -> Snackbar.show(
-                    layout = SnackbarLayout.Toast(
-                        text = effect.text,
-                    ),
+                is WeatherEffect.ShowErrorSnackbar -> Snackbar.show(
+                    layout = effect.info.toSnackbarLayout(viewModel::accept),
                     duration = SnackbarDuration.Long,
                 )
             }
@@ -41,3 +41,11 @@ fun WeatherScreen() {
         onIntent = viewModel::accept,
     )
 }
+
+private fun SnackbarData.toSnackbarLayout(
+    onIntent: (WeatherIntent) -> Unit,
+): SnackbarLayout = SnackbarLayout.ErrorWithButton(
+    textResId = textResId,
+    buttonTitleResId = button.titleResId,
+    onButtonClick = { onIntent(WeatherIntent.SnackbarButtonClicked(button.action)) },
+)

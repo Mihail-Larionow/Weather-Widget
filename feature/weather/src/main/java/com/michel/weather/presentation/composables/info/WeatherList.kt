@@ -54,7 +54,10 @@ private fun WeatherListItem(
             text = item.toString(),
             style = WeatherTheme.typography.title2,
             color = WeatherTheme.colors.textPrimary,
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(
+                horizontal = 8.dp,
+                vertical = 16.dp,
+            ),
         )
     }
 }

@@ -5,7 +5,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import com.michel.appinformation.presentation.mvi.entities.AppInfoIntent
 import com.michel.appinformation.presentation.mvi.entities.AppInfoState
-import com.michel.designsystem.composables.preview.ThemePreviews
 import com.michel.designsystem.theme.WeatherTheme
 
 @Composable
@@ -16,7 +15,9 @@ internal fun AppInfoScreen(
     Scaffold(
         backgroundColor = WeatherTheme.colors.backgroundSecondary,
         topBar = {
-            AppInfoToolbar()
+            AppInfoToolbar(
+                onBackClick = { onIntent(AppInfoIntent.BackClicked) },
+            )
         }
     ) { innerPadding ->
         AppInfoContent(

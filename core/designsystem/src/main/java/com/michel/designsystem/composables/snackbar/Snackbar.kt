@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ internal fun Snackbar(
     icon: Painter,
     buttonTitle: String,
     onButtonClick: () -> Unit,
+    iconTint: Color = WeatherTheme.colors.iconsPrimary,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -62,11 +64,12 @@ internal fun Snackbar(
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.weight(1f),
         ) {
             SnackbarIcon(
                 icon = icon,
+                tint = iconTint,
                 modifier = Modifier.padding(top = 2.dp)
             )
             Title(
@@ -74,7 +77,7 @@ internal fun Snackbar(
                 maxLines = 2,
             )
         }
-        Button(
+        TextButton(
             title = buttonTitle,
             onClick = onButtonClick,
         )
@@ -109,7 +112,7 @@ private fun Title(
 ) {
     Text(
         text = text,
-        style = WeatherTheme.typography.body3,
+        style = WeatherTheme.typography.body2,
         color = WeatherTheme.colors.textPrimary,
         maxLines = maxLines,
         overflow = TextOverflow.Ellipsis,
@@ -120,18 +123,19 @@ private fun Title(
 @Composable
 private fun SnackbarIcon(
     icon: Painter,
+    tint: Color,
     modifier: Modifier = Modifier,
 ) {
     Icon(
         painter = icon,
-        tint = WeatherTheme.colors.iconsPrimary,
+        tint = tint,
         contentDescription = null,
         modifier = modifier,
     )
 }
 
 @Composable
-private fun Button(
+private fun TextButton(
     title: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -139,14 +143,14 @@ private fun Button(
     Box(
         modifier = modifier
             .wrapContentWidth()
-            .clickableWithRipple { onClick() }
             .clip(RoundedCornerShape(8.dp))
-            .background(WeatherTheme.colors.controlsPrimary)
+            .clickableWithRipple { onClick() }
             .padding(12.dp)
     ) {
         Text(
             text = title,
             style = WeatherTheme.typography.body3,
+            color = WeatherTheme.colors.constantBlue,
         )
     }
 }
@@ -156,9 +160,9 @@ private fun Button(
 @Composable
 private fun SnackbarPreview() = WeatherTheme {
     Snackbar(
-        text = "Это превью снекбар",
-        icon = WeatherTheme.icons.ic32.settings,
-        buttonTitle = "Кнопка",
+        text = "Это превью снекбара",
+        icon = WeatherTheme.icons.ic32.error,
+        buttonTitle = "КНОПКА",
         onButtonClick = { }
     )
 }
