@@ -1,26 +1,38 @@
 package com.michel.weather.presentation.composables
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.michel.designsystem.composables.buttons.icon.IconButton
 import com.michel.designsystem.composables.buttons.icon.IconButtonSize
+import com.michel.designsystem.composables.extensions.elevation
 import com.michel.designsystem.composables.preview.ThemePreviews
 import com.michel.designsystem.composables.toolbar.Toolbar
 import com.michel.designsystem.theme.WeatherTheme
-import com.michel.weather.presentation.composables.colors.weatherBackground
 
 @Composable
 internal fun WeatherToolbar(
+    isListScrolled: State<Boolean>,
     onProfileClick: () -> Unit,
     onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val elevation by animateDpAsState(
+        targetValue = if (isListScrolled.value) 4.dp else 0.dp,
+        label = "elevation",
+    )
+
     Toolbar(
         center = {
             Title()
@@ -38,8 +50,9 @@ internal fun WeatherToolbar(
             )
         },
         modifier = modifier
+            .elevation(elevation)
             .fillMaxWidth()
-            .background(Color.Transparent)
+            .background(WeatherTheme.colors.backgroundSecondary)
     )
 }
 
@@ -49,7 +62,7 @@ private fun Title(
 ) {
     Text(
         text = WeatherTheme.strings.weather.toolbarTitle,
-        color = WeatherTheme.colors.constantWhite,
+        color = WeatherTheme.colors.textSecondary,
         style = WeatherTheme.typography.title1,
         modifier = modifier,
     )
@@ -68,7 +81,7 @@ private fun SettingsButton(
     ) {
         Icon(
             painter = WeatherTheme.icons.ic32.settings,
-            tint = WeatherTheme.colors.constantWhite,
+            tint = WeatherTheme.colors.iconsSecondary,
             contentDescription = null,
         )
     }
@@ -87,7 +100,7 @@ private fun ProfileButton(
     ) {
         Icon(
             painter = WeatherTheme.icons.ic32.profilePlaceholder,
-            tint = WeatherTheme.colors.constantWhite,
+            tint = WeatherTheme.colors.iconsSecondary,
             contentDescription = null,
         )
     }
@@ -96,10 +109,12 @@ private fun ProfileButton(
 @ThemePreviews
 @Composable
 private fun WeatherToolbarPreview() = WeatherTheme {
+    val isListScrolled = remember { derivedStateOf { true } }
+
     WeatherToolbar(
+        isListScrolled = isListScrolled,
         onProfileClick = { },
         onSettingsClick = { },
-        modifier = Modifier.weatherBackground(),
     )
 }
 

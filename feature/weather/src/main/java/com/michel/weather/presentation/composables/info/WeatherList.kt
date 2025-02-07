@@ -24,9 +24,7 @@ internal fun WeatherList(
         modifier = modifier.fillMaxWidth(),
     ) {
         items.forEachIndexed { index, item ->
-            WeatherListItem(
-                item = item,
-            )
+            WeatherListItem(item)
 
             if (index < items.lastIndex) {
                 Divider(

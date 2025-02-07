@@ -1,15 +1,14 @@
 package com.michel.weather.presentation.composables
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,28 +16,23 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.michel.designsystem.composables.Skeleton
-import com.michel.designsystem.composables.blur.blurredBackground
 import com.michel.designsystem.composables.extensions.clickableWithRipple
-import com.michel.designsystem.composables.extensions.elevation
 import com.michel.designsystem.composables.extensions.isScrolled
 import com.michel.designsystem.composables.preview.ThemePreviews
 import com.michel.designsystem.theme.WeatherTheme
-import com.michel.weather.presentation.composables.colors.weatherBackground
 import com.michel.weather.presentation.composables.info.WeatherList
 import com.michel.weather.presentation.mvi.entities.WeatherIntent
 import com.michel.weather.presentation.mvi.entities.WeatherState
-import dev.chrisbanes.haze.HazeState
 
 private val DefaultCornerSize = 16.dp
 
@@ -47,13 +41,24 @@ internal fun WeatherScreen(
     state: WeatherState,
     onIntent: (WeatherIntent) -> Unit,
 ) {
-    Scaffold { paddingValues ->
+    val scrollState = rememberLazyListState()
+    val isListScrolled = remember { derivedStateOf { scrollState.isScrolled() } }
+
+    Scaffold(
+        topBar = {
+            WeatherToolbar(
+                isListScrolled = isListScrolled,
+                onProfileClick = { onIntent(WeatherIntent.ProfileClicked) },
+                onSettingsClick = { onIntent(WeatherIntent.SettingsClicked) },
+            )
+        },
+        backgroundColor = WeatherTheme.colors.backgroundSecondary,
+    ) { paddingValues ->
         WeatherContent(
             state = state,
             onIntent = onIntent,
-            modifier = Modifier
-                .weatherBackground()
-                .padding(paddingValues),
+            scrollState = scrollState,
+            modifier = Modifier.padding(paddingValues),
         )
     }
 }
@@ -62,6 +67,7 @@ internal fun WeatherScreen(
 private fun WeatherContent(
     state: WeatherState,
     onIntent: (WeatherIntent) -> Unit,
+    scrollState: LazyListState,
     modifier: Modifier = Modifier,
 ) {
     when (state) {
@@ -72,6 +78,7 @@ private fun WeatherContent(
         is WeatherState.Loaded -> LoadedContent(
             state = state,
             onIntent = onIntent,
+            scrollState = scrollState,
             modifier = modifier,
         )
     }
@@ -106,23 +113,21 @@ private fun LoadingContent(
 private fun LoadedContent(
     state: WeatherState.Loaded,
     onIntent: (WeatherIntent) -> Unit,
+    scrollState: LazyListState,
     modifier: Modifier = Modifier,
 ) {
-    val hazeState = remember { HazeState() }
-    val scrollState = rememberLazyListState()
-
     LazyColumn(
         state = scrollState,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         item {
             MainWeatherInfo(
                 state = state,
                 onIntent = onIntent,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 32.dp),
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
             )
         }
         item {
@@ -133,11 +138,9 @@ private fun LoadedContent(
                         vertical = 16.dp,
                         horizontal = 12.dp,
                     )
-                    .clip(RoundedCornerShape(16.dp))
-                    .blurredBackground(
-                        hazeState = hazeState,
-                        blurBackgroundColor = WeatherTheme.colors.constantBlack.copy(alpha = 0.1f),
-                        fallbackColor = WeatherTheme.colors.constantBlack,
+                    .background(
+                        color = WeatherTheme.colors.backgroundPrimary,
+                        shape = RoundedCornerShape(WeatherScreenDefaults.CornerRadius),
                     ),
             )
         }
@@ -155,10 +158,6 @@ private fun MainWeatherInfo(
         verticalArrangement = Arrangement.spacedBy(DefaultCornerSize),
         modifier = modifier,
     ) {
-        WeatherToolbar(
-            onProfileClick = { onIntent(WeatherIntent.ProfileClicked) },
-            onSettingsClick = { onIntent(WeatherIntent.SettingsClicked) },
-        )
         WeatherIcon(
             modifier = Modifier
                 .size(64.dp)
@@ -168,15 +167,21 @@ private fun MainWeatherInfo(
                     onClick = { onIntent(WeatherIntent.Reload) },
                 ),
         )
-        Temperature(
+        TemperatureText(
             temperature = state.temperature.first().toString(),
+            color = WeatherTheme.colors.textPrimary,
+            style = WeatherTheme.typography.main,
+            fontWeight = FontWeight.Bold,
         )
     }
 }
 
 @Composable
-private fun Temperature(
+private fun TemperatureText(
     temperature: String,
+    color: Color,
+    style: TextStyle,
+    fontWeight: FontWeight,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -185,15 +190,15 @@ private fun Temperature(
     ) {
         Text(
             text = temperature,
-            fontWeight = FontWeight.Bold,
-            style = WeatherTheme.typography.main,
-            color = Color.White,
+            fontWeight = fontWeight,
+            style = style,
+            color = color,
         )
         Text(
             text = WeatherTheme.strings.weather.celsiusDegree,
-            fontWeight = FontWeight.Bold,
-            style = WeatherTheme.typography.main,
-            color = Color.White,
+            fontWeight = fontWeight,
+            style = style,
+            color = color,
         )
     }
 }
