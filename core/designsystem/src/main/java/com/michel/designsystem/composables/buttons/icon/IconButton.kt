@@ -2,7 +2,7 @@ package com.michel.designsystem.composables.buttons.icon
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ButtonElevation
@@ -21,7 +21,6 @@ fun IconButton(
     modifier: Modifier = Modifier,
     disabledBackgroundColor: Color? = null,
     size: IconButtonSize = IconButtonSize.Medium,
-    height: IconButtonSize = IconButtonSize.Large,
     isEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
@@ -31,7 +30,7 @@ fun IconButton(
             backgroundColor = backgroundColor,
             disabledBackgroundColor = disabledBackgroundColor ?: backgroundColor,
         ),
-        shape = RoundedCornerShape(height.getActionButtonCornerSize()),
+        shape = CircleShape,
         elevation = ButtonDefaults.noElevation(),
         contentPadding = buttonPadding,
         onClick = onClick,
