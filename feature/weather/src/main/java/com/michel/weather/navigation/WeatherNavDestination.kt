@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.michel.api.NavDestination
 import com.michel.api.RouteSpec
 import com.michel.api.routeSpec
-import com.michel.weather.presentation.WeatherScreen
+import com.michel.weather.presentation.composables.WeatherScreen
 
 object WeatherNavDestination : NavDestination<WeatherRoute> {
     override val routeSpec: RouteSpec<WeatherRoute> = routeSpec()

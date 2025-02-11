@@ -9,26 +9,43 @@ class WeatherStrings internal constructor() {
     val weather = FeatureWeather()
 
     val settings = FeatureSettings()
+
+    val profile = FeatureProfile()
 }
 
 class FeatureWeather internal constructor() {
 
+    val celsiusDegree: String
+        @Composable
+        get() = stringResource(id = stringsR.common_strings_celsius_degree)
+
+    val reloadButton: String
+        @Composable
+        get() = stringResource(id = stringsR.feature_weather_snackbar_button_reload_title)
+
     val toolbarTitle: String
         @Composable
-        get() = stringResource(id = stringsR.feature_weather_toolbar_title)
+        get() = stringResource(id = stringsR.common_strings_now)
+
+    val unknownException: String
+        @Composable
+        get() = stringResource(id = stringsR.common_strings_unknown_exception_text)
 }
 
 class FeatureSettings internal constructor() {
 
     val toolbarTitle: String
         @Composable
-        get() = stringResource(id = stringsR.feature_settings_toolbar_title)
+        get() = stringResource(id = stringsR.common_strings_settings)
+}
 
-    val themeToggleTitle: String
-        @Composable
-        get() = stringResource(id = stringsR.feature_settings_theme_toggle_title)
+class FeatureProfile internal constructor() {
 
-    val themeToggleSubtitle: String
+    val settingsMenuItemTitle: String
         @Composable
-        get() = stringResource(id = stringsR.feature_settings_theme_toggle_subtitle)
+        get() = stringResource(id = stringsR.common_strings_settings)
+
+    val appInfoMenuItemTitle: String
+        @Composable
+        get() = stringResource(id = stringsR.common_strings_app_info)
 }

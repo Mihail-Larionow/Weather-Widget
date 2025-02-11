@@ -10,6 +10,7 @@ import com.michel.api.models.exceptions.TimeoutException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -19,6 +20,7 @@ class KtorNetworkDataSource @Inject constructor(
 
     override suspend fun <R> networkRequest(request: Request<R>): Result<R> = try {
         withContext(Dispatchers.IO) {
+            delay(3000)
             performRequest(request).toResult(request.responseType)
         }
     } catch (delay: TimeoutCancellationException) {

@@ -4,6 +4,7 @@ import com.michel.mvi.store.Actor
 import com.michel.weather.domain.usecases.GetWeatherStateUseCase
 import com.michel.weather.domain.usecases.ReloadWeatherDataUseCase
 import com.michel.weather.navigation.WeatherNavDirection
+import com.michel.weather.presentation.models.SnackbarAction
 import com.michel.weather.presentation.mvi.entities.WeatherIntent
 import com.michel.weather.presentation.mvi.entities.WeatherMessage
 import com.michel.weather.presentation.mvi.entities.WeatherState
@@ -28,9 +29,10 @@ class WeatherActor @Inject constructor(
         intent: WeatherIntent,
         prevState: WeatherState
     ): Flow<WeatherMessage> = when (intent) {
-        WeatherIntent.Reload -> reloadWeatherData()
-        WeatherIntent.ProfileClicked -> flowOf(WeatherMessage.Navigate(WeatherNavDirection.ToProfile))
-        WeatherIntent.SettingsClicked -> flowOf(WeatherMessage.Navigate(WeatherNavDirection.ToSettings))
+        is WeatherIntent.Reload -> reloadWeatherData()
+        is WeatherIntent.SnackbarButtonClicked -> intent.action.toWeatherMessageFlow()
+        is WeatherIntent.ProfileClicked -> flowOf(WeatherMessage.Navigate(WeatherNavDirection.ToProfile))
+        is WeatherIntent.SettingsClicked -> flowOf(WeatherMessage.Navigate(WeatherNavDirection.ToSettings))
     }
 
     private fun subscribeOnWeatherState(): Flow<WeatherMessage> =
@@ -39,6 +41,12 @@ class WeatherActor @Inject constructor(
         }
 
     private fun reloadWeatherData(): Flow<WeatherMessage> = flow {
-        reloadWeatherDataUseCase()
+        reloadWeatherDataUseCase().onFailure { exception ->
+            emit(WeatherMessage.WeatherDataLoadFailed(exception))
+        }
+    }
+
+    private fun SnackbarAction.toWeatherMessageFlow(): Flow<WeatherMessage> = when(this) {
+        SnackbarAction.RELOAD_WEATHER_DATA -> reloadWeatherData()
     }
 }

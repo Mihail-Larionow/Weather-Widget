@@ -7,6 +7,10 @@ import com.michel.designsystem.R.drawable as drawableR
 
 class WeatherIcons internal constructor() {
     val ic32 = Ic32()
+
+    val ic64 = Ic64()
+
+    val ic128 = Ic128()
 }
 
 class Ic32 internal constructor() {
@@ -15,11 +19,29 @@ class Ic32 internal constructor() {
         @Composable
         get() = painterResource(id = drawableR.icon_32_back)
 
-    val settings: Painter
+    val error: Painter
         @Composable
-        get() = painterResource(id = drawableR.icon_32_settings)
+        get() = painterResource(id = drawableR.icon_32_error)
 
     val profilePlaceholder: Painter
         @Composable
         get() = painterResource(id = drawableR.icon_32_profile_placeholder)
+
+    val settings: Painter
+        @Composable
+        get() = painterResource(id = drawableR.icon_32_settings)
+}
+
+class Ic64 internal constructor() {
+
+    val sun: Painter
+        @Composable
+        get() = painterResource(id = drawableR.icon_64_sun)
+}
+
+class Ic128 internal constructor() {
+
+    val sun: Painter
+        @Composable
+        get() = painterResource(id = drawableR.icon_128_sun)
 }

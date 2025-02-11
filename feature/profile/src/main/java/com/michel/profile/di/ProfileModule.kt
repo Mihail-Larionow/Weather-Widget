@@ -4,6 +4,7 @@ import com.michel.mvi.store.Store
 import com.michel.mvi.store.StoreViewModel
 import com.michel.mvi.store.StoreViewModelFactory
 import com.michel.mvi.store.store
+import com.michel.profile.presentation.model.ProfileHeader
 import com.michel.profile.presentation.mvi.ProfileActor
 import com.michel.profile.presentation.mvi.ProfileReducer
 import com.michel.profile.presentation.mvi.entities.ProfileEffect
@@ -31,7 +32,7 @@ internal interface ProfileModule {
             reducer: ProfileReducer,
         ): Store<ProfileIntent, ProfileEffect, ProfileState, ProfileMessage> =
             store(
-                initialState = ProfileState.Loading,
+                initialState = ProfileState.Loaded(ProfileHeader.Authorized),
                 scope = CoroutineScope(EmptyCoroutineContext),
             ) {
                 this.actor = actor

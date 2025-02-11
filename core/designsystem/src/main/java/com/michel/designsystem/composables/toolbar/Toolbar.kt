@@ -62,7 +62,6 @@ private fun ToolbarIcon(painter: Painter, onClick: () -> Unit) {
             .clickableWithRipple(shape = CircleShape, onClick = onClick)
             .padding(12.dp),
     )
-
 }
 
 @Composable

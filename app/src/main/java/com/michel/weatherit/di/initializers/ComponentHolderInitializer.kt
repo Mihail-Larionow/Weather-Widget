@@ -2,6 +2,8 @@ package com.michel.weatherit.di.initializers
 
 import com.michel.appinformation.di.AppInfoComponentHolder
 import com.michel.appinformation.di.AppInfoDependencies
+import com.michel.deeplinks.di.DeeplinkComponentHolder
+import com.michel.deeplinks.di.DeeplinkDependencies
 import com.michel.impl.di.NetworkComponentHolder
 import com.michel.impl.di.NetworkDependencies
 import com.michel.navigation.di.NavComponentHolder
@@ -22,7 +24,8 @@ class ComponentHolderInitializer @Inject constructor(
     private val profileFeatureDependenciesProvider: Provider<ProfileDependencies>,
     private val appInfoFeatureDependenciesProvider: Provider<AppInfoDependencies>,
     private val navFeatureDependenciesProvider: Provider<NavDependencies>,
-    ) {
+    private val deeplinkFeatureDependenciesProvider: Provider<DeeplinkDependencies>,
+) {
 
     fun initAll() {
         NetworkComponentHolder.init(networkDependenciesProvider)
@@ -31,5 +34,6 @@ class ComponentHolderInitializer @Inject constructor(
         ProfileComponentHolder.init(profileFeatureDependenciesProvider)
         AppInfoComponentHolder.init(appInfoFeatureDependenciesProvider)
         NavComponentHolder.init(navFeatureDependenciesProvider)
+        DeeplinkComponentHolder.init(deeplinkFeatureDependenciesProvider)
     }
 }

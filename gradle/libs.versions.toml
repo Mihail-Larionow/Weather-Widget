@@ -1,6 +1,7 @@
 [versions]
 agp = "8.6.1"
 animationAndroid = "1.7.6"
+detekt = "1.23.7"
 gson = "2.10.1"
 kotlin = "2.0.0"
 kotlinx-coroutines = "1.9.0"
@@ -17,6 +18,7 @@ material = "1.10.0"
 navigationCompose = "2.9.0-alpha01"
 androidBuildTools = "8.7.2"
 mockk = "1.13.13"
+manifest-guard = "1.0.0"
 materialAndroid = "1.8.0-alpha07"
 materialIconsCoreAndroid = "1.6.6"
 dagger = "2.52"
@@ -25,6 +27,9 @@ fragmentKtx = "1.8.5"
 navigationCommonKtx = "2.8.5"
 runtimeAndroid = "1.7.6"
 navigationRuntimeKtx = "2.8.5"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+haze = "1.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -85,6 +90,10 @@ ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devt
 
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+haze = { group = "dev.chrisbanes.haze", name = "haze", version.ref = "haze" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
@@ -94,4 +103,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-
+manifest-guard = { id = "com.dpforge.manifestguard", version.ref = "manifest-guard" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

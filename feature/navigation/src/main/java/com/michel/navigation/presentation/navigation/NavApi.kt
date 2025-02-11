@@ -2,6 +2,7 @@ package com.michel.navigation.presentation.navigation
 
 import com.michel.api.FeatureNavApi
 import com.michel.appinformation.navigation.AppInfoNavDirection
+import com.michel.deeplinks.navigation.DeeplinkNavDirection
 import com.michel.di.model.BaseApi
 import com.michel.profile.navigation.ProfileNavDirection
 import com.michel.settings.navigation.SettingsNavDirection
@@ -16,4 +17,6 @@ interface NavApi : BaseApi {
     val profileNavApi: FeatureNavApi<ProfileNavDirection>
 
     val settingsNavApi: FeatureNavApi<SettingsNavDirection>
+
+    val deeplinkNavApi: FeatureNavApi<DeeplinkNavDirection>
 }

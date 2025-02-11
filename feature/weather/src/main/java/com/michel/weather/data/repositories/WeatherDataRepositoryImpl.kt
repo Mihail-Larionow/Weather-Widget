@@ -2,8 +2,8 @@ package com.michel.weather.data.repositories
 
 import com.michel.weather.data.datasources.WeatherLocalDataSource
 import com.michel.weather.data.datasources.WeatherNetworkDataSource
-import com.michel.weather.data.extensions.toWeatherDomainModel
-import com.michel.weather.domain.models.WeatherDomainModel
+import com.michel.weather.data.extensions.toDomainModel
+import com.michel.weather.domain.models.Weather
 import com.michel.weather.domain.repositories.WeatherDataRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -14,13 +14,13 @@ class WeatherDataRepositoryImpl @Inject constructor(
     private val localDataSource: WeatherLocalDataSource,
 ) : WeatherDataRepository {
 
-    override fun getWeatherData(): StateFlow<WeatherDomainModel> = localDataSource.weatherDataState
+    override fun getWeatherData(): StateFlow<Weather> = localDataSource.weatherDataState
 
     override suspend fun refreshWeatherData(): Result<Unit> = networkDataSource
         .getWeatherData()
         .onSuccess {
             localDataSource.weatherDataState.update { _ ->
-                it.toWeatherDomainModel()
+                it.toDomainModel()
             }
         }
         .map { }

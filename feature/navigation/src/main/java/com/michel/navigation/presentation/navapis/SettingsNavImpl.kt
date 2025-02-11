@@ -8,10 +8,11 @@ import javax.inject.Inject
 internal class SettingsNavImpl @Inject constructor(
     private val mainNavController: MainNavController,
 ) : FeatureNavApi<SettingsNavDirection> {
+
     override fun navigate(direction: SettingsNavDirection) {
         mainNavController.run {
             when (direction) {
-                SettingsNavDirection.Up -> navigateUp()
+                is SettingsNavDirection.Up -> navigateUp()
             }
         }
     }

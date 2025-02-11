@@ -31,7 +31,7 @@ internal interface AppInfoModule {
             reducer: AppInfoReducer,
         ): Store<AppInfoIntent, AppInfoEffect, AppInfoState, AppInfoMessage> =
             store(
-                initialState = AppInfoState(),
+                initialState = AppInfoState.Loading,
                 scope = CoroutineScope(EmptyCoroutineContext),
             ) {
                 this.actor = actor
